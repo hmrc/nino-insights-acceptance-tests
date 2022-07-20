@@ -21,6 +21,7 @@ import com.typesafe.config.{Config, ConfigFactory}
 object TestConfiguration {
   val config: Config        = ConfigFactory.load()
   val env: String           = config.getString("environment")
+  val useZap: Boolean       = config.getBoolean("use.zap.proxy")
   val defaultConfig: Config = config.getConfig("local")
   val envConfig: Config     = config.getConfig(env).withFallback(defaultConfig)
 
@@ -31,6 +32,8 @@ object TestConfiguration {
     }
     s"$host${serviceRoute(service)}"
   }
+  def userAgent: String           = envConfig.getString("user-agents.test-http-client")
+  def expectedServiceName: String = envConfig.getString("user-agents.service-name")
 
   def environmentHost: String = envConfig.getString("services.host")
 

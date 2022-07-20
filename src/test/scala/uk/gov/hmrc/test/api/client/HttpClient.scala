@@ -18,32 +18,68 @@ package uk.gov.hmrc.test.api.client
 
 import akka.actor.ActorSystem
 import play.api.libs.ws.DefaultBodyWritables._
-import play.api.libs.ws.StandaloneWSRequest
-import play.api.libs.ws.ahc.StandaloneAhcWSClient
+import play.api.libs.ws.ahc.{AhcWSClientConfig, StandaloneAhcWSClient}
+import play.api.libs.ws.{DefaultWSProxyServer, StandaloneWSRequest, WSClientConfig}
+import uk.gov.hmrc.test.api.conf.TestConfiguration
+import uk.gov.hmrc.test.api.conf.TestConfiguration.useZap
 
 import scala.concurrent.{ExecutionContext, Future}
 
 trait HttpClient {
 
   implicit val actorSystem: ActorSystem = ActorSystem()
-  val wsClient: StandaloneAhcWSClient   = StandaloneAhcWSClient()
+  val userAgent: String                 = TestConfiguration.userAgent
+  val wsClient: StandaloneAhcWSClient   = StandaloneAhcWSClient(
+    AhcWSClientConfig(WSClientConfig(userAgent = Some(userAgent)))
+  )
+  val zapHost: Option[String]           = sys.env.get("ZAP_HOST")
+  val defaultZapHost: String            = "localhost:11000"
   implicit val ec: ExecutionContext     = ExecutionContext.global
 
+  def zapProxy: DefaultWSProxyServer = {
+    val proxyParts: Seq[String] = zapHost.getOrElse(defaultZapHost).split(":").toSeq
+    DefaultWSProxyServer(host = proxyParts.headOption.get, port = proxyParts.lastOption.get.toInt)
+  }
+
   def get(url: String, headers: (String, String)*): Future[StandaloneWSRequest#Self#Response] =
-    wsClient
-      .url(url)
-      .withHttpHeaders(headers: _*)
-      .get
+    if (useZap) {
+      wsClient
+        .url(url)
+        .withHttpHeaders(headers: _*)
+        .withProxyServer(zapProxy)
+        .get
+    } else {
+      wsClient
+        .url(url)
+        .withHttpHeaders(headers: _*)
+        .get
+    }
 
   def post(url: String, bodyAsJson: String, headers: (String, String)*): Future[StandaloneWSRequest#Self#Response] =
-    wsClient
-      .url(url)
-      .withHttpHeaders(headers: _*)
-      .post(bodyAsJson)
+    if (useZap) {
+      wsClient
+        .url(url)
+        .withHttpHeaders(headers: _*)
+        .withProxyServer(zapProxy)
+        .post(bodyAsJson)
+    } else {
+      wsClient
+        .url(url)
+        .withHttpHeaders(headers: _*)
+        .post(bodyAsJson)
+    }
 
   def delete(url: String, headers: (String, String)*): Future[StandaloneWSRequest#Self#Response] =
-    wsClient
-      .url(url)
-      .withHttpHeaders(headers: _*)
-      .delete
+    if (useZap) {
+      wsClient
+        .url(url)
+        .withHttpHeaders(headers: _*)
+        .withProxyServer(zapProxy)
+        .delete()
+    } else {
+      wsClient
+        .url(url)
+        .withHttpHeaders(headers: _*)
+        .delete()
+    }
 }
