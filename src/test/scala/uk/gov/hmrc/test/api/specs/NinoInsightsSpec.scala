@@ -45,7 +45,7 @@ class NinoInsightsSpec extends BaseSpec with WireMock {
               "$[?(" +
                 s"@.auditSource == '${TestConfiguration.expectedServiceName}'" +
                 "&& @.auditType == 'TxSucceeded'" +
-                s"&& @.detail.nino == '$NO_RISK_NINO'" +
+                s"&& @.detail.nino == '${NO_RISK_NINO.nino}'" +
                 s"&& @.detail.ninoInsightsCorrelationId == '${actual.ninoInsightsCorrelationId}'" +
                 s"&& @.detail.riskScore == '${actual.riskScore}'" +
                 s"&& @.detail.reason == '${actual.reason}'" +
@@ -75,7 +75,7 @@ class NinoInsightsSpec extends BaseSpec with WireMock {
               "$[?(" +
                 s"@.auditSource == '${TestConfiguration.expectedServiceName}'" +
                 "&& @.auditType == 'TxSucceeded'" +
-//                s"&& @.detail.nino == '$RISKY_NINO'" +
+                s"&& @.detail.nino == '${RISKY_NINO.nino}'" +
                 s"&& @.detail.ninoInsightsCorrelationId == '${actual.ninoInsightsCorrelationId}'" +
                 s"&& @.detail.riskScore == '${actual.riskScore}'" +
                 s"&& @.detail.reason == '${actual.reason}'" +
