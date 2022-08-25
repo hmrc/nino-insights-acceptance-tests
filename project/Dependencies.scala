@@ -11,6 +11,10 @@ object Dependencies {
     "com.typesafe.play"     %% "play-ws-standalone-json" % "2.1.10" % Test,
     "com.github.tomakehurst" % "wiremock"                % "2.27.2" % Test,
     "org.assertj"            % "assertj-core"            % "3.23.1" % Test,
-    "uk.gov.hmrc"           %% "nino-insights"           % "0.+"    % Test
+    "uk.gov.hmrc"           %% "nino-insights"           % "0.+"    % Test,
+    "org.tpolecat"          %% "doobie-core"             % "0.7.1"  % Test,
+    "org.tpolecat"          %% "doobie-postgres"         % "0.7.1"  % Test,
+    "org.tpolecat"          %% "doobie-scalatest"        % "0.7.1"  % Test,
+    "uk.gov.hmrc"           %% "attribute-risk-lists"    % "0.+"    % Test
   )
 }
