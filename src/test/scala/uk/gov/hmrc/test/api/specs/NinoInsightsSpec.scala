@@ -20,7 +20,7 @@ import com.github.tomakehurst.wiremock.client.WireMock.{matchingJsonPath, postRe
 import org.assertj.core.api.Assertions.assertThat
 import uk.gov.hmrc.ninoinsights.model.response.response_codes.{NINO_NOT_ON_WATCH_LIST, NINO_ON_WATCH_LIST}
 import uk.gov.hmrc.test.api.conf.TestConfiguration
-import uk.gov.hmrc.test.api.testdata.NationalInsuranceNumbers.{NO_RISK_NINO, RISKY_NINO}
+import uk.gov.hmrc.test.api.testdata.NationalInsuranceNumbers.{NO_RISK_NINO, RISKY_NINO, RISKY_NINO_LOWER_CASE}
 
 class NinoInsightsSpec extends BaseSpec with WireMock {
 
@@ -76,6 +76,36 @@ class NinoInsightsSpec extends BaseSpec with WireMock {
                 s"@.auditSource == '${TestConfiguration.expectedServiceName}'" +
                 "&& @.auditType == 'TxSucceeded'" +
                 s"&& @.detail.nino == '${RISKY_NINO.nino}'" +
+                s"&& @.detail.ninoInsightsCorrelationId == '${actual.ninoInsightsCorrelationId}'" +
+                s"&& @.detail.riskScore == '${actual.riskScore}'" +
+                s"&& @.detail.reason == '${actual.reason}'" +
+                s"&& @.detail.userAgent == '${TestConfiguration.userAgent}'" +
+                ")]"
+            )
+          )
+      )
+    }
+
+    Scenario("Get risking information for a NINO on the risk list using lower case") {
+      Given("I want to see if we hold any risking information for a NINO")
+
+      When("I use the NINO check insights API to see what information we hold")
+
+      val actual = ninoCheckHelper.getNinoCheckResponse(RISKY_NINO_LOWER_CASE)
+
+      Then("I am given the relevant risking information")
+
+      assertThat(actual.riskScore).isEqualTo(100)
+      assertThat(actual.reason).isEqualTo(NINO_ON_WATCH_LIST)
+
+      verify(
+        postRequestedFor(urlEqualTo("/write/audit"))
+          .withRequestBody(
+            matchingJsonPath(
+              "$[?(" +
+                s"@.auditSource == '${TestConfiguration.expectedServiceName}'" +
+                "&& @.auditType == 'TxSucceeded'" +
+                s"&& @.detail.nino == '${RISKY_NINO_LOWER_CASE.nino}'" +
                 s"&& @.detail.ninoInsightsCorrelationId == '${actual.ninoInsightsCorrelationId}'" +
                 s"&& @.detail.riskScore == '${actual.riskScore}'" +
                 s"&& @.detail.reason == '${actual.reason}'" +
