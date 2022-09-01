@@ -44,7 +44,7 @@ class NinoInsightsSpec extends BaseSpec with WireMock {
             matchingJsonPath(
               "$[?(" +
                 s"@.auditSource == '${TestConfiguration.expectedServiceName}'" +
-                "&& @.auditType == 'TxSucceeded'" +
+                "&& @.auditType == 'NinoInsightsLookup'" +
                 s"&& @.detail.nino == '${NO_RISK_NINO.nino}'" +
                 s"&& @.detail.ninoInsightsCorrelationId == '${actual.ninoInsightsCorrelationId}'" +
                 s"&& @.detail.riskScore == '${actual.riskScore}'" +
@@ -74,7 +74,7 @@ class NinoInsightsSpec extends BaseSpec with WireMock {
             matchingJsonPath(
               "$[?(" +
                 s"@.auditSource == '${TestConfiguration.expectedServiceName}'" +
-                "&& @.auditType == 'TxSucceeded'" +
+                "&& @.auditType == 'NinoInsightsLookup'" +
                 s"&& @.detail.nino == '${RISKY_NINO.nino}'" +
                 s"&& @.detail.ninoInsightsCorrelationId == '${actual.ninoInsightsCorrelationId}'" +
                 s"&& @.detail.riskScore == '${actual.riskScore}'" +
@@ -104,7 +104,7 @@ class NinoInsightsSpec extends BaseSpec with WireMock {
             matchingJsonPath(
               "$[?(" +
                 s"@.auditSource == '${TestConfiguration.expectedServiceName}'" +
-                "&& @.auditType == 'TxSucceeded'" +
+                "&& @.auditType == 'NinoInsightsLookup'" +
                 s"&& @.detail.nino == '${RISKY_NINO_LOWER_CASE.nino}'" +
                 s"&& @.detail.ninoInsightsCorrelationId == '${actual.ninoInsightsCorrelationId}'" +
                 s"&& @.detail.riskScore == '${actual.riskScore}'" +
