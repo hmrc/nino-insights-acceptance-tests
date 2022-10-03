@@ -20,6 +20,8 @@ import org.scalatest.{BeforeAndAfterAll, Suite}
 import uk.gov.hmrc.internalauth.models.{AuthToken, Token}
 import uk.gov.hmrc.test.api.helpers.InternalAuthHelper
 
+import java.time.{Duration, Instant}
+
 trait InternalAuthToken extends BeforeAndAfterAll {
 
   this: Suite =>
@@ -28,6 +30,8 @@ trait InternalAuthToken extends BeforeAndAfterAll {
   val ninoGatewayInternalAuthToken: Token    = Token("local-test-token")
   var internalAuthToken: Option[AuthToken]   = None
 
+  def createDummyAuthToken(tokenValue: String): Option[AuthToken] =
+    Some(AuthToken(Token(tokenValue), Instant.now().plus(Duration.ofDays(5))))
   override def beforeAll(): Unit = {
     super.beforeAll()
     internalAuthToken = Some(internalAuthHelper.postConfigureInternalAuthToken())

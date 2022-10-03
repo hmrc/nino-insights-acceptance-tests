@@ -33,7 +33,7 @@ class NinoInsightsGatewaySpec extends BaseSpec with WireMockTrait with InternalA
 
       When("I use the NINO check insights API to see what information we hol")
 
-      val actual = ninoCheckHelper.getNinoCheckResponseFromGateway(NO_RISK_NINO)
+      val actual = ninoCheckHelper.parseValidNinoCheckResponseFromGateway(NO_RISK_NINO)
 
       Then("I am given the relevant risking information")
 
@@ -63,7 +63,7 @@ class NinoInsightsGatewaySpec extends BaseSpec with WireMockTrait with InternalA
 
       When("I use the NINO check insights API to see what information we hold")
 
-      val actual = ninoCheckHelper.getNinoCheckResponseFromGateway(RISKY_NINO)
+      val actual = ninoCheckHelper.parseValidNinoCheckResponseFromGateway(RISKY_NINO)
 
       Then("I am given the relevant risking information")
 
@@ -93,7 +93,7 @@ class NinoInsightsGatewaySpec extends BaseSpec with WireMockTrait with InternalA
 
       When("I use the NINO check insights API to see what information we hold")
 
-      val actual = ninoCheckHelper.getNinoCheckResponseFromGateway(RISKY_NINO_LOWER_CASE)
+      val actual = ninoCheckHelper.parseValidNinoCheckResponseFromGateway(RISKY_NINO_LOWER_CASE)
 
       Then("I am given the relevant risking information")
 
@@ -117,7 +117,5 @@ class NinoInsightsGatewaySpec extends BaseSpec with WireMockTrait with InternalA
           )
       )
     }
-
-    //TODO invalid token check
   }
 }

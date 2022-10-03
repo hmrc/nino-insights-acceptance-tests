@@ -35,12 +35,20 @@ class NinoInsightsCheckService extends HttpClient {
     host: String = ninoInsights
   ): StandaloneWSRequest#Self#Response =
     Await.result(
-      post(
-        s"$host/${Endpoints.CHECK_INSIGHTS}",
-        ninoInsightsRequestWrites.writes(ninoDetails).toString(),
-        ("Content-Type", "application/json"),
-        ("Authorization", internalAuthToken.get.token.value)
-      ),
+      if (internalAuthToken.isDefined) {
+        post(
+          s"$host/${Endpoints.CHECK_INSIGHTS}",
+          ninoInsightsRequestWrites.writes(ninoDetails).toString(),
+          ("Content-Type", "application/json"),
+          ("Authorization", internalAuthToken.get.token.value)
+        )
+      } else {
+        post(
+          s"$host/${Endpoints.CHECK_INSIGHTS}",
+          ninoInsightsRequestWrites.writes(ninoDetails).toString(),
+          ("Content-Type", "application/json")
+        )
+      },
       10.seconds
     )
 }

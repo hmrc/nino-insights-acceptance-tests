@@ -20,6 +20,7 @@ import com.github.tomakehurst.wiremock.client.WireMock.{matchingJsonPath, postRe
 import org.assertj.core.api.Assertions.assertThat
 import uk.gov.hmrc.ninoinsights.model.response.response_codes.{NINO_NOT_ON_WATCH_LIST, NINO_ON_WATCH_LIST}
 import uk.gov.hmrc.test.api.conf.TestConfiguration
+import uk.gov.hmrc.test.api.testdata.ApiErrors.UNAUTHORISED
 import uk.gov.hmrc.test.api.testdata.NationalInsuranceNumbers.{NO_RISK_NINO, RISKY_NINO, RISKY_NINO_LOWER_CASE}
 
 class NinoInsightsSpec extends BaseSpec with WireMockTrait with InternalAuthToken {
@@ -31,7 +32,7 @@ class NinoInsightsSpec extends BaseSpec with WireMockTrait with InternalAuthToke
 
       When("I use the NINO check insights API to see what information we hol")
 
-      val actual = ninoCheckHelper.getNinoCheckResponseFromAPI(internalAuthToken, NO_RISK_NINO)
+      val actual = ninoCheckHelper.parseValidNinoCheckResponseFromAPI(internalAuthToken, NO_RISK_NINO)
 
       Then("I am given the relevant risking information")
 
@@ -61,7 +62,7 @@ class NinoInsightsSpec extends BaseSpec with WireMockTrait with InternalAuthToke
 
       When("I use the NINO check insights API to see what information we hold")
 
-      val actual = ninoCheckHelper.getNinoCheckResponseFromAPI(internalAuthToken, RISKY_NINO)
+      val actual = ninoCheckHelper.parseValidNinoCheckResponseFromAPI(internalAuthToken, RISKY_NINO)
 
       Then("I am given the relevant risking information")
 
@@ -91,7 +92,7 @@ class NinoInsightsSpec extends BaseSpec with WireMockTrait with InternalAuthToke
 
       When("I use the NINO check insights API to see what information we hold")
 
-      val actual = ninoCheckHelper.getNinoCheckResponseFromAPI(internalAuthToken, RISKY_NINO_LOWER_CASE)
+      val actual = ninoCheckHelper.parseValidNinoCheckResponseFromAPI(internalAuthToken, RISKY_NINO_LOWER_CASE)
 
       Then("I am given the relevant risking information")
 
@@ -116,6 +117,58 @@ class NinoInsightsSpec extends BaseSpec with WireMockTrait with InternalAuthToke
       )
     }
 
-    //TODO invalid token check
+    Scenario("Try to get risking information for a NINO on the risk list using an invalid internal auth token") {
+      Given("I want to see if we hold any risking information for a NINO")
+
+      When("I use the NINO check insights API to see what information we hold")
+
+      val actual = ninoCheckHelper.parseInvalidNinoCheckResponseFromAPI(createDummyAuthToken("INVALID"), RISKY_NINO)
+
+      Then("I am given the relevant risking information")
+
+      assertThat(actual.statusCode).isEqualTo(401)
+      assertThat(actual.message).isEqualTo(UNAUTHORISED)
+
+      verify(
+        postRequestedFor(urlEqualTo("/write/audit"))
+          .withRequestBody(
+            matchingJsonPath(
+              "$[?(" +
+                s"@.auditSource == '${TestConfiguration.expectedServiceName}'" +
+                "&& @.auditType == 'ServerInternalError'" +
+                s"&& @.detail.transactionFailureReason == '$UNAUTHORISED'" +
+                s"&& @.detail.userAgentString == '${TestConfiguration.userAgent}'" +
+                ")]"
+            )
+          )
+      )
+    }
+
+    Scenario("Try to get risking information for a NINO on the risk list without using an internal auth token") {
+      Given("I want to see if we hold any risking information for a NINO")
+
+      When("I use the NINO check insights API to see what information we hold")
+
+      val actual = ninoCheckHelper.parseInvalidNinoCheckResponseFromAPI(None, RISKY_NINO)
+
+      Then("I am given the relevant risking information")
+
+      assertThat(actual.statusCode).isEqualTo(401)
+      assertThat(actual.message).isEqualTo(UNAUTHORISED)
+
+      verify(
+        postRequestedFor(urlEqualTo("/write/audit"))
+          .withRequestBody(
+            matchingJsonPath(
+              "$[?(" +
+                s"@.auditSource == '${TestConfiguration.expectedServiceName}'" +
+                "&& @.auditType == 'ServerInternalError'" +
+                s"&& @.detail.transactionFailureReason == '$UNAUTHORISED'" +
+                s"&& @.detail.userAgentString == '${TestConfiguration.userAgent}'" +
+                ")]"
+            )
+          )
+      )
+    }
   }
 }
