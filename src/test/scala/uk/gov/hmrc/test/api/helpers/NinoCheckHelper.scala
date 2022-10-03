@@ -18,17 +18,30 @@ package uk.gov.hmrc.test.api.helpers
 
 import play.api.libs.json.Json
 import play.api.libs.ws.StandaloneWSRequest
+import uk.gov.hmrc.internalauth.models.AuthToken
 import uk.gov.hmrc.ninoinsights.model.request.NinoInsightsRequest
 import uk.gov.hmrc.ninoinsights.model.response.NinoInsightsResponse
 import uk.gov.hmrc.ninoinsights.model.response.NinoInsightsResponse.implicits.ninoInsightsResponseFormat
-import uk.gov.hmrc.test.api.service.NinoCheckService
+import uk.gov.hmrc.test.api.service.{NinoGatewayCheckService, NinoInsightsCheckService}
 
 class NinoCheckHelper {
-  val ninoCheckAPI: NinoCheckService = new NinoCheckService
+  val ninoInsightsCheckAPI: NinoInsightsCheckService = new NinoInsightsCheckService
+  val ninoGatewayCheckAPI: NinoGatewayCheckService   = new NinoGatewayCheckService
 
-  def getNinoCheckResponse(ninoDetails: NinoInsightsRequest): NinoInsightsResponse = {
-    val authServiceRequestResponse: StandaloneWSRequest#Self#Response =
-      ninoCheckAPI.postInsightsCheck(ninoDetails)
-    Json.parse(authServiceRequestResponse.body).as[NinoInsightsResponse]
+  def getNinoCheckResponseFromAPI(
+    internalAuthToken: Option[AuthToken],
+    ninoDetails: NinoInsightsRequest
+  ): NinoInsightsResponse = {
+    val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response =
+      ninoInsightsCheckAPI.postInsightsCheck(internalAuthToken, ninoDetails)
+    Json.parse(ninoCheckRequestResponse.body).as[NinoInsightsResponse]
+  }
+
+  def getNinoCheckResponseFromGateway(
+    ninoDetails: NinoInsightsRequest
+  ): NinoInsightsResponse = {
+    val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response =
+      ninoGatewayCheckAPI.postGatewayCheck(ninoDetails)
+    Json.parse(ninoCheckRequestResponse.body).as[NinoInsightsResponse]
   }
 }

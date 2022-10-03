@@ -22,7 +22,9 @@ import uk.gov.hmrc.ninoinsights.model.response.response_codes.{NINO_NOT_ON_WATCH
 import uk.gov.hmrc.test.api.conf.TestConfiguration
 import uk.gov.hmrc.test.api.testdata.NationalInsuranceNumbers.{NO_RISK_NINO, RISKY_NINO, RISKY_NINO_LOWER_CASE}
 
-class NinoInsightsSpec extends BaseSpec with WireMockTrait with InternalAuthToken {
+class NinoInsightsGatewaySpec extends BaseSpec with WireMockTrait with InternalAuthToken {
+
+  val ninoGatewayUserAgent = "nino-gateway"
 
   Feature("Check the NINO insights API") {
 
@@ -31,7 +33,7 @@ class NinoInsightsSpec extends BaseSpec with WireMockTrait with InternalAuthToke
 
       When("I use the NINO check insights API to see what information we hol")
 
-      val actual = ninoCheckHelper.getNinoCheckResponseFromAPI(internalAuthToken, NO_RISK_NINO)
+      val actual = ninoCheckHelper.getNinoCheckResponseFromGateway(NO_RISK_NINO)
 
       Then("I am given the relevant risking information")
 
@@ -49,7 +51,7 @@ class NinoInsightsSpec extends BaseSpec with WireMockTrait with InternalAuthToke
                 s"&& @.detail.ninoInsightsCorrelationId == '${actual.ninoInsightsCorrelationId}'" +
                 s"&& @.detail.riskScore == '${actual.riskScore}'" +
                 s"&& @.detail.reason == '${actual.reason}'" +
-                s"&& @.detail.userAgent == '${TestConfiguration.userAgent}'" +
+                s"&& @.detail.userAgent == '$ninoGatewayUserAgent'" +
                 ")]"
             )
           )
@@ -61,7 +63,7 @@ class NinoInsightsSpec extends BaseSpec with WireMockTrait with InternalAuthToke
 
       When("I use the NINO check insights API to see what information we hold")
 
-      val actual = ninoCheckHelper.getNinoCheckResponseFromAPI(internalAuthToken, RISKY_NINO)
+      val actual = ninoCheckHelper.getNinoCheckResponseFromGateway(RISKY_NINO)
 
       Then("I am given the relevant risking information")
 
@@ -79,7 +81,7 @@ class NinoInsightsSpec extends BaseSpec with WireMockTrait with InternalAuthToke
                 s"&& @.detail.ninoInsightsCorrelationId == '${actual.ninoInsightsCorrelationId}'" +
                 s"&& @.detail.riskScore == '${actual.riskScore}'" +
                 s"&& @.detail.reason == '${actual.reason}'" +
-                s"&& @.detail.userAgent == '${TestConfiguration.userAgent}'" +
+                s"&& @.detail.userAgent == '$ninoGatewayUserAgent'" +
                 ")]"
             )
           )
@@ -91,7 +93,7 @@ class NinoInsightsSpec extends BaseSpec with WireMockTrait with InternalAuthToke
 
       When("I use the NINO check insights API to see what information we hold")
 
-      val actual = ninoCheckHelper.getNinoCheckResponseFromAPI(internalAuthToken, RISKY_NINO_LOWER_CASE)
+      val actual = ninoCheckHelper.getNinoCheckResponseFromGateway(RISKY_NINO_LOWER_CASE)
 
       Then("I am given the relevant risking information")
 
@@ -109,7 +111,7 @@ class NinoInsightsSpec extends BaseSpec with WireMockTrait with InternalAuthToke
                 s"&& @.detail.ninoInsightsCorrelationId == '${actual.ninoInsightsCorrelationId}'" +
                 s"&& @.detail.riskScore == '${actual.riskScore}'" +
                 s"&& @.detail.reason == '${actual.reason}'" +
-                s"&& @.detail.userAgent == '${TestConfiguration.userAgent}'" +
+                s"&& @.detail.userAgent == '$ninoGatewayUserAgent'" +
                 ")]"
             )
           )
