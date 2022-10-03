@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.test.api.helpers
+package uk.gov.hmrc.test.api.models
 
-object Endpoints {
-  val CHECK_INSIGHTS = "check/insights"
-  val INTERNAL_AUTH  = "test-only/token"
-  val DELETE_TOKEN   = "internal-auth/token/revoke"
+import play.api.libs.json.{Format, Json}
+
+final case class BadRequest(statusCode: Int, message: String)
+
+object BadRequest {
+  implicit val badRequestResponseFormat: Format[BadRequest] = Json.format[BadRequest]
 }

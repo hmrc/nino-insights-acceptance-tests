@@ -15,6 +15,7 @@ object Dependencies {
     "org.tpolecat"          %% "doobie-core"             % "0.7.1"  % Test,
     "org.tpolecat"          %% "doobie-postgres"         % "0.7.1"  % Test,
     "org.tpolecat"          %% "doobie-scalatest"        % "0.7.1"  % Test,
-    "uk.gov.hmrc"           %% "attribute-risk-lists"    % "0.+"    % Test
+    "uk.gov.hmrc"           %% "attribute-risk-lists"    % "0.+"    % Test,
+    "uk.gov.hmrc"           %% "internal-auth"           % "0.+"    % Test
   )
 }

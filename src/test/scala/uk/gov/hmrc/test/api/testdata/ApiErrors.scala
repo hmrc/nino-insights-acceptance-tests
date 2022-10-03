@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.test.api.helpers
+package uk.gov.hmrc.test.api.testdata
 
-object Endpoints {
-  val CHECK_INSIGHTS = "check/insights"
-  val INTERNAL_AUTH  = "test-only/token"
-  val DELETE_TOKEN   = "internal-auth/token/revoke"
+object ApiErrors {
+  val UNAUTHORISED = "Unauthorized"
 }
