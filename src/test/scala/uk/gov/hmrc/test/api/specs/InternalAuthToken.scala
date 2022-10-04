@@ -17,8 +17,8 @@
 package uk.gov.hmrc.test.api.specs
 
 import org.scalatest.{BeforeAndAfterAll, Suite}
-import uk.gov.hmrc.internalauth.models.{AuthToken, Token}
 import uk.gov.hmrc.test.api.helpers.InternalAuthHelper
+import uk.gov.hmrc.test.api.models.{AuthToken, Token}
 
 import java.time.{Duration, Instant}
 
@@ -27,7 +27,7 @@ trait InternalAuthToken extends BeforeAndAfterAll {
   this: Suite =>
 
   val internalAuthHelper: InternalAuthHelper = new InternalAuthHelper()
-  val ninoGatewayInternalAuthToken: Token    = Token("local-test-token")
+  val ninoGatewayInternalAuthToken: Token    = Token("1234")
   var internalAuthToken: Option[AuthToken]   = None
 
   def createDummyAuthToken(tokenValue: String): Option[AuthToken] =

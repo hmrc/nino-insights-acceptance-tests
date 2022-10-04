@@ -17,12 +17,12 @@
 package uk.gov.hmrc.test.api.service
 
 import play.api.libs.ws.StandaloneWSRequest
-import uk.gov.hmrc.internalauth.models.AuthToken
 import uk.gov.hmrc.ninoinsights.model.request.NinoInsightsRequest
 import uk.gov.hmrc.ninoinsights.model.request.NinoInsightsRequest.implicits.ninoInsightsRequestWrites
 import uk.gov.hmrc.test.api.client.HttpClient
 import uk.gov.hmrc.test.api.conf.TestConfiguration
 import uk.gov.hmrc.test.api.helpers.Endpoints
+import uk.gov.hmrc.test.api.models.AuthToken
 
 import scala.concurrent.Await
 import scala.concurrent.duration.DurationInt

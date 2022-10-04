@@ -18,9 +18,7 @@ package uk.gov.hmrc.test.api.helpers
 
 import play.api.libs.json.Json
 import play.api.libs.ws.StandaloneWSRequest
-import uk.gov.hmrc.internalauth.models._
-import uk.gov.hmrc.internalauth.testonly.TestOnlyAddTokenRequest
-import uk.gov.hmrc.internalauth.utils.TokenGenerator
+import uk.gov.hmrc.test.api.models._
 import uk.gov.hmrc.test.api.service.InternalAuthService
 
 class InternalAuthHelper {
