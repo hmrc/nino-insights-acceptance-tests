@@ -18,10 +18,10 @@ package uk.gov.hmrc.test.api.service
 
 import play.api.libs.json.Json
 import play.api.libs.ws.StandaloneWSRequest
-import uk.gov.hmrc.internalauth.testonly.TestOnlyAddTokenRequest
 import uk.gov.hmrc.test.api.client.HttpClient
 import uk.gov.hmrc.test.api.conf.TestConfiguration
 import uk.gov.hmrc.test.api.helpers.Endpoints
+import uk.gov.hmrc.test.api.models.TestOnlyAddTokenRequest
 
 import scala.concurrent.Await
 import scala.concurrent.duration.DurationInt

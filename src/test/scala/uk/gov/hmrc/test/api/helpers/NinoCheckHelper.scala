@@ -18,11 +18,10 @@ package uk.gov.hmrc.test.api.helpers
 
 import play.api.libs.json.Json
 import play.api.libs.ws.StandaloneWSRequest
-import uk.gov.hmrc.internalauth.models.AuthToken
 import uk.gov.hmrc.ninoinsights.model.request.NinoInsightsRequest
 import uk.gov.hmrc.ninoinsights.model.response.NinoInsightsResponse
 import uk.gov.hmrc.ninoinsights.model.response.NinoInsightsResponse.implicits.ninoInsightsResponseFormat
-import uk.gov.hmrc.test.api.models.BadRequest
+import uk.gov.hmrc.test.api.models.{AuthToken, BadRequest}
 import uk.gov.hmrc.test.api.service.{NinoGatewayCheckService, NinoInsightsCheckService}
 
 class NinoCheckHelper {
