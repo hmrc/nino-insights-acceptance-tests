@@ -124,7 +124,7 @@ class NinoInsightsSpec extends BaseSpec with WireMockTrait with InternalAuthToke
 
       val actual = ninoCheckHelper.parseInvalidNinoCheckResponseFromAPI(createDummyAuthToken("INVALID"), RISKY_NINO)
 
-      Then("I am given the relevant risking information")
+      Then("My query is rejected")
 
       assertThat(actual.statusCode).isEqualTo(401)
       assertThat(actual.message).isEqualTo(UNAUTHORISED)
@@ -151,7 +151,7 @@ class NinoInsightsSpec extends BaseSpec with WireMockTrait with InternalAuthToke
 
       val actual = ninoCheckHelper.parseInvalidNinoCheckResponseFromAPI(None, RISKY_NINO)
 
-      Then("I am given the relevant risking information")
+      Then("My query is rejected")
 
       assertThat(actual.statusCode).isEqualTo(401)
       assertThat(actual.message).isEqualTo(UNAUTHORISED)
