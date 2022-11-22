@@ -27,14 +27,14 @@ import scala.concurrent.Await
 import scala.concurrent.duration.DurationInt
 
 class NinoGatewayCheckService extends HttpClient {
-  var ninoGateway: String              = TestConfiguration.url("nino-gateway")
+  var host: String              = TestConfiguration.url("nino-gateway")
+  val checkAccountURL: String          = s"$host/${Endpoints.CHECK_INSIGHTS}"
   def postGatewayCheck(
     ninoDetails: NinoInsightsRequest,
-    host: String = ninoGateway
   ): StandaloneWSRequest#Self#Response =
     Await.result(
       post(
-        s"$host/${Endpoints.CHECK_INSIGHTS}",
+        checkAccountURL,
         ninoInsightsRequestWrites.writes(ninoDetails).toString(),
         ("Content-Type", "application/json")
       ),

@@ -27,7 +27,7 @@ trait InternalAuthToken extends BeforeAndAfterAll {
   this: Suite =>
 
   val internalAuthHelper: InternalAuthHelper = new InternalAuthHelper()
-  val ninoGatewayInternalAuthToken: Token    = Token("1234")
+  val ninoGatewayInternalAuthToken: Token    = Token("2345")
   var internalAuthToken: Option[AuthToken]   = None
 
   def createDummyAuthToken(tokenValue: String): Option[AuthToken] =

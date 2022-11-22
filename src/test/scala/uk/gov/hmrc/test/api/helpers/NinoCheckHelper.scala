@@ -52,11 +52,8 @@ class NinoCheckHelper {
     Json.parse(ninoCheckRequestResponse.body).as[BadRequest]
   }
 
-  def callNinoCheckResponseFromAPI(ninoDetails: NinoInsightsRequest): StandaloneWSRequest#Self#Response =
-    ninoGatewayCheckAPI.postGatewayCheck(ninoDetails)
-
   def parseValidNinoCheckResponseFromGateway(ninoDetails: NinoInsightsRequest): NinoInsightsResponse = {
-    val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response = callNinoCheckResponseFromAPI(ninoDetails)
+    val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response = ninoGatewayCheckAPI.postGatewayCheck(ninoDetails)
     Json.parse(ninoCheckRequestResponse.body).as[NinoInsightsResponse]
   }
 }
