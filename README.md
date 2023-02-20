@@ -10,6 +10,14 @@ Prior to executing the tests ensure you have:
 
 ## Start the local services
 
+If you don't have mongodb installed locally you can run it in docker using the following command
+
+    docker run -d --rm --name mongodb -p 27017-27019:27017-27019 mongo:4
+
+If you don't have postgres installed locally you can run it in docker using the following command
+
+    docker run -d --rm --name postgresql -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 postgres:10.14
+
 Run the following commands to start services locally:
 
     sm --start NINO_INSIGHTS ATTRIBUTE_RISK_LISTS NINO_GATEWAY INTERNAL_AUTH --appendArgs '{
