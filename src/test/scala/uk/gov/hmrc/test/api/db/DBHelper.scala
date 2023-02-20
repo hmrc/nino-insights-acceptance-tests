@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,14 +38,11 @@ object DBHelper {
 
   private val schemaNamePlaceHolder = "__schema__"
 
-  def update(fileName: File, schemaName: String)(implicit tx: Transactor[IO]): IO[doobie.Transactor[IO]] = {
-    (for {
+  def update(fileName: File, schemaName: String)(implicit tx: Transactor[IO]): IO[doobie.Transactor[IO]] =
+    for {
       sql <- readResource(fileName).use(f => IO(f.mkString.replaceAll(schemaNamePlaceHolder, schemaName)))
       n   <- const(sql).update.run.transact(tx)
-    } yield n).unsafeRunSync()
-
-    IO(tx)
-  }
+    } yield tx
 
   def update(s: String)(implicit tx: Transactor[IO]): IO[Int] =
     const(s).update.run.transact(tx)

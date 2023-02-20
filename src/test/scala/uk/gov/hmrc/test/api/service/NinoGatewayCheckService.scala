@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,8 +27,10 @@ import scala.concurrent.Await
 import scala.concurrent.duration.DurationInt
 
 class NinoGatewayCheckService extends HttpClient {
+
   var host: String              = TestConfiguration.url("nino-gateway")
   val checkAccountURL: String          = s"$host/${Endpoints.CHECK_INSIGHTS}"
+
   def postGatewayCheck(
     ninoDetails: NinoInsightsRequest,
   ): StandaloneWSRequest#Self#Response =
