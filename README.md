@@ -20,8 +20,8 @@ If you don't have postgres installed locally you can run it in docker using the 
 
 Run the following commands to start services locally:
 
-    sm --start NINO_INSIGHTS ATTRIBUTE_RISK_LISTS NINO_GATEWAY INTERNAL_AUTH --appendArgs '{
-        "NINO_INSIGHTS": [
+    sm --start NINO_INSIGHTS_PROXY ATTRIBUTE_RISK_LISTS NINO_GATEWAY INTERNAL_AUTH --appendArgs '{
+        "NINO_INSIGHTS_PROXY": [
             "-J-Dauditing.consumer.baseUri.port=6001",
             "-J-Dauditing.consumer.baseUri.host=localhost",
             "-J-Dauditing.enabled=true"
@@ -35,7 +35,7 @@ Run the following commands to start services locally:
 
 Execute the `run_specs.sh` script:
 
-`./run_specs.sh`
+`./run-specs.sh`
 
 ## Running ZAP specs - on a developer machine
 
