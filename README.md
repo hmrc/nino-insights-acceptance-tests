@@ -28,7 +28,7 @@ Run the following commands to start services locally:
         ],
         "ATTRIBUTE_RISK_LISTS": [
             "-J-Dmicroservice.risk-lists.database.dbName=postgres",
-            "-J-Dmicroservice.attribute-risk-lists.database.use-canned-data=true"
+            "-J-Dmicroservice.risk-lists.database.use-canned-data=true"
         ]
     }'
 
