@@ -38,7 +38,8 @@ class NinoGatewayCheckService extends HttpClient {
       post(
         checkAccountURL,
         ninoInsightsRequestWrites.writes(ninoDetails).toString(),
-        ("Content-Type", "application/json")
+        ("Content-Type", "application/json"),
+        ("User-Agent", "allowed-test-hmrc-service")
       ),
       10.seconds
     )

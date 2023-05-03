@@ -21,34 +21,50 @@ import play.api.libs.ws.StandaloneWSRequest
 import uk.gov.hmrc.ninoinsights.model.request.NinoInsightsRequest
 import uk.gov.hmrc.ninoinsights.model.response.NinoInsightsResponse
 import uk.gov.hmrc.ninoinsights.model.response.NinoInsightsResponse.implicits.ninoInsightsResponseFormat
-import uk.gov.hmrc.test.api.models.{AuthToken, BadRequest}
-import uk.gov.hmrc.test.api.service.{NinoGatewayCheckService, NinoInsightsCheckService}
+import uk.gov.hmrc.test.api.models.BadRequest
+import uk.gov.hmrc.test.api.service.{NinoGatewayCheckService, NinoInsightsCheckDirectService, NinoInsightsCheckService}
 
 class NinoCheckHelper {
   val ninoInsightsCheckAPI: NinoInsightsCheckService = new NinoInsightsCheckService
   val ninoGatewayCheckAPI: NinoGatewayCheckService   = new NinoGatewayCheckService
+  val ninoInsightsCheckAPIDirectly: NinoInsightsCheckDirectService = new NinoInsightsCheckDirectService
 
-  def callNinoCheckResponseFromAPI(
-    internalAuthToken: Option[AuthToken],
+  def callNinoCheckResponseFromAPIDirectly(
     ninoDetails: NinoInsightsRequest
   ): StandaloneWSRequest#Self#Response =
-    ninoInsightsCheckAPI.postInsightsCheck(internalAuthToken, ninoDetails)
+    ninoInsightsCheckAPIDirectly.postInsightsCheckDirectly(ninoDetails)
 
-  def parseValidNinoCheckResponseFromAPI(
-    internalAuthToken: Option[AuthToken],
+  def callNinoCheckResponseFromAPI(
+    ninoDetails: NinoInsightsRequest
+  ): StandaloneWSRequest#Self#Response =
+    ninoInsightsCheckAPI.postInsightsCheck(ninoDetails)
+
+  def callInvalidNinoCheckResponseFromAPI(
+    ninoDetails: NinoInsightsRequest
+  ): StandaloneWSRequest#Self#Response =
+    ninoInsightsCheckAPI.postInsightsInvalidCheck(ninoDetails)
+
+  def parseValidNinoCheckResponseFromAPIDirectly(
     ninoDetails: NinoInsightsRequest
   ): NinoInsightsResponse = {
     val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response =
-      callNinoCheckResponseFromAPI(internalAuthToken, ninoDetails)
+      callNinoCheckResponseFromAPIDirectly(ninoDetails)
+    Json.parse(ninoCheckRequestResponse.body).as[NinoInsightsResponse]
+  }
+
+  def parseValidNinoCheckResponseFromAPI(
+    ninoDetails: NinoInsightsRequest
+  ): NinoInsightsResponse = {
+    val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response =
+      callNinoCheckResponseFromAPI(ninoDetails)
     Json.parse(ninoCheckRequestResponse.body).as[NinoInsightsResponse]
   }
 
   def parseInvalidNinoCheckResponseFromAPI(
-    internalAuthToken: Option[AuthToken],
     ninoDetails: NinoInsightsRequest
   ): BadRequest = {
     val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response =
-      callNinoCheckResponseFromAPI(internalAuthToken, ninoDetails)
+      callInvalidNinoCheckResponseFromAPI(ninoDetails)
     Json.parse(ninoCheckRequestResponse.body).as[BadRequest]
   }
 

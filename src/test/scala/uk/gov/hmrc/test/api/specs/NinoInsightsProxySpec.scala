@@ -18,19 +18,18 @@ package uk.gov.hmrc.test.api.specs
 
 import org.assertj.core.api.Assertions.assertThat
 import uk.gov.hmrc.ninoinsights.model.response.response_codes.{NINO_NOT_ON_WATCH_LIST, NINO_ON_WATCH_LIST}
+import uk.gov.hmrc.test.api.testdata.ApiErrors.NOT_AUTHORISED
 import uk.gov.hmrc.test.api.testdata.NationalInsuranceNumbers.{NO_RISK_NINO, RISKY_NINO, RISKY_NINO_LOWER_CASE}
 
-class NinoInsightsGatewaySpec extends BaseSpec with WireMockTrait with InternalAuthToken {
-
-  val ninoGatewayUserAgent = "nino-gateway"
+class NinoInsightsProxySpec extends BaseSpec {
 
   Feature("Check the NINO insights API") {
 
     Scenario("Get risking information for a NINO that is not on the risk list") {
       Given("I want to see if we hold any risking information for a NINO")
 
-      When("I use the NINO check insights API to see what information we hol")
-      val actual = ninoCheckHelper.parseValidNinoCheckResponseFromGateway(NO_RISK_NINO)
+      When("I use the NINO check insights API to see what information we hold")
+      val actual = ninoCheckHelper.parseValidNinoCheckResponseFromAPI(NO_RISK_NINO)
 
       Then("I am given the relevant risking information")
       assertThat(actual.riskScore).isEqualTo(0)
@@ -41,7 +40,7 @@ class NinoInsightsGatewaySpec extends BaseSpec with WireMockTrait with InternalA
       Given("I want to see if we hold any risking information for a NINO")
 
       When("I use the NINO check insights API to see what information we hold")
-      val actual = ninoCheckHelper.parseValidNinoCheckResponseFromGateway(RISKY_NINO)
+      val actual = ninoCheckHelper.parseValidNinoCheckResponseFromAPI(RISKY_NINO)
 
       Then("I am given the relevant risking information")
       assertThat(actual.riskScore).isEqualTo(100)
@@ -52,11 +51,22 @@ class NinoInsightsGatewaySpec extends BaseSpec with WireMockTrait with InternalA
       Given("I want to see if we hold any risking information for a NINO")
 
       When("I use the NINO check insights API to see what information we hold")
-      val actual = ninoCheckHelper.parseValidNinoCheckResponseFromGateway(RISKY_NINO_LOWER_CASE)
+      val actual = ninoCheckHelper.parseValidNinoCheckResponseFromAPI(RISKY_NINO_LOWER_CASE)
 
       Then("I am given the relevant risking information")
       assertThat(actual.riskScore).isEqualTo(100)
       assertThat(actual.reason).isEqualTo(NINO_ON_WATCH_LIST)
+    }
+
+    Scenario("Try to get risking information for a NINO on the risk list without using a user agent") {
+      Given("I want to see if we hold any risking information for a NINO")
+
+      When("I use the NINO check insights API to see what information we hold")
+      val actual = ninoCheckHelper.parseInvalidNinoCheckResponseFromAPI(RISKY_NINO)
+
+      Then("My query is rejected")
+      assertThat(actual.code).isEqualTo(403)
+      assertThat(actual.description).contains(NOT_AUTHORISED)
     }
   }
 }

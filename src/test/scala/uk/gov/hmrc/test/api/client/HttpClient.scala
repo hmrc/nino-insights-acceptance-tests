@@ -20,7 +20,6 @@ import akka.actor.ActorSystem
 import play.api.libs.ws.DefaultBodyWritables._
 import play.api.libs.ws.ahc.{AhcWSClientConfig, StandaloneAhcWSClient}
 import play.api.libs.ws.{DefaultWSProxyServer, StandaloneWSRequest, WSClientConfig}
-import uk.gov.hmrc.test.api.conf.TestConfiguration
 import uk.gov.hmrc.test.api.conf.TestConfiguration.useZap
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -28,9 +27,8 @@ import scala.concurrent.{ExecutionContext, Future}
 trait HttpClient {
 
   implicit val actorSystem: ActorSystem = ActorSystem()
-  val userAgent: String                 = TestConfiguration.userAgent
   val wsClient: StandaloneAhcWSClient   = StandaloneAhcWSClient(
-    AhcWSClientConfig(WSClientConfig(userAgent = Some(userAgent)))
+    AhcWSClientConfig(WSClientConfig())
   )
   val zapHost: Option[String]           = sys.env.get("ZAP_HOST")
   val defaultZapHost: String            = "localhost:11000"

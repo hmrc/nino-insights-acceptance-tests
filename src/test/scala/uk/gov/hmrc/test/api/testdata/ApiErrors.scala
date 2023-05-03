@@ -17,5 +17,5 @@
 package uk.gov.hmrc.test.api.testdata
 
 object ApiErrors {
-  val UNAUTHORISED = "Unauthorized"
+  val NOT_AUTHORISED = "not authorized"
 }

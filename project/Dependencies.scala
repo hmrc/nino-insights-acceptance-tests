@@ -17,6 +17,5 @@ object Dependencies {
     "org.tpolecat"          %% "doobie-scalatest"        % "0.13.4"  % Test,
     "uk.gov.hmrc.mongo"     %% "hmrc-mongo-test-play-28" % "0.73.0" % Test,
     "org.typelevel"         %% "cats-core"               % "2.3.1"  % Test,
-    "uk.gov.hmrc"           %% "attribute-risk-lists"    % "0.+"    % Test
   )
 }

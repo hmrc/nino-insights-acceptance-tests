@@ -1,0 +1,12 @@
+{
+  "add": [
+    {
+      "reason": "Improper Authentication",
+      "contextId": 1,
+      "url": "http:\/\/localhost:9864\/.*",
+      "ruleId": 10105,
+      "urlIsRegex": "true",
+      "newLevel": 0
+    }
+  ]
+}
