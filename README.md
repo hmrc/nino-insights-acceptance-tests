@@ -20,15 +20,20 @@ If you don't have postgres installed locally you can run it in docker using the 
 
 Run the following commands to start services locally:
 
-    sm --start NINO_INSIGHTS_PROXY ATTRIBUTE_RISK_LISTS NINO_GATEWAY INTERNAL_AUTH --appendArgs '{
-        "NINO_INSIGHTS_PROXY": [
+    sm --start NINO_INSIGHTS_PROXY NINO_INSIGHTS NINO_GATEWAY INTERNAL_AUTH --appendArgs '{
+        "NINO_INSIGHTS": [
+            "-J-Dmicroservice.nino-insights.database.dbName=postgres",
+            "-J-Dmicroservice.nino-insights.database.use-canned-data=true",
             "-J-Dauditing.consumer.baseUri.port=6001",
             "-J-Dauditing.consumer.baseUri.host=localhost",
             "-J-Dauditing.enabled=true"
         ],
-        "ATTRIBUTE_RISK_LISTS": [
-            "-J-Dmicroservice.risk-lists.database.dbName=postgres",
-            "-J-Dmicroservice.risk-lists.database.use-canned-data=true"
+        "NINO_INSIGHTS_PROXY": [
+            "-J-Dauditing.consumer.baseUri.port=6001",
+            "-J-Dauditing.consumer.baseUri.host=localhost",
+            "-J-Dauditing.enabled=false",
+            "-J-Dmicroservice.services.access-control.enabled=true",
+            "-J-Dmicroservice.services.access-control.allow-list.1=allowed-test-hmrc-service"
         ]
     }'
 

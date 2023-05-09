@@ -26,11 +26,10 @@ object TestConfiguration {
   val envConfig: Config     = config.getConfig(env).withFallback(defaultConfig)
 
   def url(service: String): String = {
-    val host = env match {
+    env match {
       case "local" => s"$environmentHost:${servicePort(service)}"
       case _       => s"${envConfig.getString(s"services.host")}"
     }
-    s"$host${serviceRoute(service)}"
   }
   def userAgent: String           = envConfig.getString("user-agents.test-http-client")
   def expectedServiceName: String = envConfig.getString("user-agents.service-name")

@@ -18,7 +18,7 @@ package uk.gov.hmrc.test.api.models
 
 import play.api.libs.json.{Format, Json}
 
-final case class BadRequest(statusCode: Int, message: String)
+final case class BadRequest(code: Int, description: String)
 
 object BadRequest {
   implicit val badRequestResponseFormat: Format[BadRequest] = Json.format[BadRequest]

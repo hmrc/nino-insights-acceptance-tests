@@ -26,9 +26,10 @@ import uk.gov.hmrc.test.api.helpers.Endpoints
 import scala.concurrent.Await
 import scala.concurrent.duration.DurationInt
 
-class NinoInsightsCheckService extends HttpClient {
+class NinoInsightsCheckDirectService extends HttpClient {
   var ninoInsights: String             = TestConfiguration.url("nino-insights")
-  def postInsightsCheck(
+
+  def postInsightsCheckDirectly(
     ninoDetails: NinoInsightsRequest,
     host: String = ninoInsights
   ): StandaloneWSRequest#Self#Response =
@@ -37,19 +38,8 @@ class NinoInsightsCheckService extends HttpClient {
           s"$host/${Endpoints.CHECK_INSIGHTS}",
           ninoInsightsRequestWrites.writes(ninoDetails).toString(),
           ("Content-Type", "application/json"),
-          ("User-Agent", "allowed-test-hmrc-service")
+          ("User-Agent", "allowed-test-hmrc-service"),
+          ("Authorization", "Basic YmFuay1hY2NvdW50LWluc2lnaHRzLXByb3h5OmxvY2FsLXRlc3QtdG9rZW4=")
         ), 10.seconds
-    )
-
-  def postInsightsInvalidCheck(
-    ninoDetails: NinoInsightsRequest,
-    host: String = ninoInsights
-  ): StandaloneWSRequest#Self#Response =
-    Await.result(
-      post(
-        s"$host/${Endpoints.CHECK_INSIGHTS}",
-        ninoInsightsRequestWrites.writes(ninoDetails).toString(),
-        ("Content-Type", "application/json"),
-      ), 10.seconds
     )
 }
