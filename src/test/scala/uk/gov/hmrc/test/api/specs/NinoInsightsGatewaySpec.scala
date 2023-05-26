@@ -63,6 +63,18 @@ class NinoInsightsGatewaySpec extends BaseSpec with WireMockTrait with InternalA
       assertThat(actual.reason).isEqualTo(NINO_ON_WATCH_LIST)
     }
 
+    Scenario("Get risking information for a NINO on the risk list using multiple User-Agent values in one header") {
+      Given("I want to see if we hold any risking information for a NINO")
+      And("No OriginatorId is passed as a header for the API call")
+
+      When("I use the NINO check insights API to see what information we hold")
+      val actual = ninoCheckHelper.postGatewayCheckByMultipleUserAgentValuesInOneHeader(RISKY_NINO)
+
+      Then("I am given the relevant risking information")
+      assertThat(actual.riskScore).isEqualTo(100)
+      assertThat(actual.reason).isEqualTo(NINO_ON_WATCH_LIST)
+    }
+
     Scenario("Get risking information for a NINO on the risk list using a single OriginatorId header") {
       Given("I want to see if we hold any risking information for a NINO using the OriginatorId header")
       And("No User-Agents are passed in the header for the API call")

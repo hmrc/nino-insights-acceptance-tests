@@ -82,4 +82,9 @@ class NinoCheckHelper {
     val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response = ninoGatewayCheckAPI.postGatewayCheckByMultipleUserAgentHeaders(ninoDetails)
     Json.parse(ninoCheckRequestResponse.body).as[NinoInsightsResponse]
   }
+
+  def postGatewayCheckByMultipleUserAgentValuesInOneHeader(ninoDetails: NinoInsightsRequest): NinoInsightsResponse = {
+    val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response = ninoGatewayCheckAPI.postGatewayCheckByMultipleUserAgentValuesInOneHeader(ninoDetails)
+    Json.parse(ninoCheckRequestResponse.body).as[NinoInsightsResponse]
+  }
 }
