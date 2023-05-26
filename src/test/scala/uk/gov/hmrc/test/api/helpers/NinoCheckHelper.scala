@@ -68,8 +68,18 @@ class NinoCheckHelper {
     Json.parse(ninoCheckRequestResponse.body).as[BadRequest]
   }
 
-  def parseValidNinoCheckResponseFromGateway(ninoDetails: NinoInsightsRequest): NinoInsightsResponse = {
-    val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response = ninoGatewayCheckAPI.postGatewayCheck(ninoDetails)
+  def parseValidNinoCheckResponseFromGatewayByUserAgent(ninoDetails: NinoInsightsRequest): NinoInsightsResponse = {
+    val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response = ninoGatewayCheckAPI.postGatewayCheckByUserAgentHeader(ninoDetails)
+    Json.parse(ninoCheckRequestResponse.body).as[NinoInsightsResponse]
+  }
+
+  def parseValidNinoCheckResponseFromGatewayByOriginatorId(ninoDetails: NinoInsightsRequest): NinoInsightsResponse = {
+    val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response = ninoGatewayCheckAPI.postGatewayCheckByOriginatorIdHeader(ninoDetails)
+    Json.parse(ninoCheckRequestResponse.body).as[NinoInsightsResponse]
+  }
+
+  def parseValidNinoCheckResponseFromGatewayByUserAgents(ninoDetails: NinoInsightsRequest): NinoInsightsResponse = {
+    val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response = ninoGatewayCheckAPI.postGatewayCheckByMultipleUserAgentHeaders(ninoDetails)
     Json.parse(ninoCheckRequestResponse.body).as[NinoInsightsResponse]
   }
 }
