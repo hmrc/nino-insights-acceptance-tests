@@ -72,4 +72,17 @@ class NinoGatewayCheckService extends HttpClient {
       ),
       10.seconds
     )
+
+  def postGatewayCheckByMultipleUserAgentValuesInOneHeader(
+     ninoDetails: NinoInsightsRequest,
+  ): StandaloneWSRequest#Self#Response =
+    Await.result(
+      post(
+        checkAccountURL,
+        ninoInsightsRequestWrites.writes(ninoDetails).toString(),
+        ("Content-Type", "application/json"),
+        ("User-Agent", s"${userAgentOne},${userAgentTwo}"),
+      ),
+      10.seconds
+    )
 }
