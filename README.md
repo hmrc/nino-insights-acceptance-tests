@@ -33,6 +33,7 @@ Run the following commands to start services locally:
             "-J-Dauditing.consumer.baseUri.host=localhost",
             "-J-Dauditing.enabled=false",
             "-J-Dmicroservice.services.access-control.enabled=true",
+            "-J-Dmicroservice.services.access-control.allow-list.0=nino-gateway",
             "-J-Dmicroservice.services.access-control.allow-list.1=allowed-test-hmrc-service"
         ]
     }'
