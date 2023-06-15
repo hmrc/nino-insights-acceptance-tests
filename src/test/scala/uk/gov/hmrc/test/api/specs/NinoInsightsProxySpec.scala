@@ -24,8 +24,8 @@ import uk.gov.hmrc.test.api.helpers.Endpoints
 
 class NinoInsightsProxySpec extends BaseSpec {
 
-  val endPoint: String = Endpoints.CHECK_INSIGHTS
-  val endPointWithRoute: String = Endpoints.CHECK_INSIGHTS_WITH_ROUTE
+  val endpoint: String = Endpoints.CHECK_INSIGHTS
+  val endpointWithRoute: String = Endpoints.CHECK_INSIGHTS_WITH_ROUTE
 
   Feature("Check the NINO insights API") {
 
@@ -33,7 +33,7 @@ class NinoInsightsProxySpec extends BaseSpec {
       Given("I want to see if we hold any risking information for a NINO")
 
       When("I use the NINO check insights API to see what information we hold")
-      val actual = ninoCheckHelper.parseValidNinoCheckResponseFromAPI(endPoint, NO_RISK_NINO)
+      val actual = ninoCheckHelper.parseValidNinoCheckResponseFromAPI(endpoint, NO_RISK_NINO)
 
       Then("I am given the relevant risking information")
       assertThat(actual.riskScore).isEqualTo(0)
@@ -44,7 +44,7 @@ class NinoInsightsProxySpec extends BaseSpec {
       Given("I want to see if we hold any risking information for a NINO")
 
       When("I use the NINO check insights API to see what information we hold")
-      val actual = ninoCheckHelper.parseValidNinoCheckResponseFromAPI(endPoint, RISKY_NINO)
+      val actual = ninoCheckHelper.parseValidNinoCheckResponseFromAPI(endpoint, RISKY_NINO)
 
       Then("I am given the relevant risking information")
       assertThat(actual.riskScore).isEqualTo(100)
@@ -55,7 +55,7 @@ class NinoInsightsProxySpec extends BaseSpec {
       Given("I want to see if we hold any risking information for a NINO using nino-insights route")
 
       When("I use the NINO check insights API to see what information we hold")
-      val actual = ninoCheckHelper.parseValidNinoCheckResponseFromAPI(endPointWithRoute, RISKY_NINO)
+      val actual = ninoCheckHelper.parseValidNinoCheckResponseFromAPI(endpointWithRoute, RISKY_NINO)
 
       Then("I am given the relevant risking information")
       assertThat(actual.riskScore).isEqualTo(100)
@@ -66,7 +66,7 @@ class NinoInsightsProxySpec extends BaseSpec {
       Given("I want to see if we hold any risking information for a NINO")
 
       When("I use the NINO check insights API to see what information we hold")
-      val actual = ninoCheckHelper.parseValidNinoCheckResponseFromAPI(endPoint, RISKY_NINO_LOWER_CASE)
+      val actual = ninoCheckHelper.parseValidNinoCheckResponseFromAPI(endpoint, RISKY_NINO_LOWER_CASE)
 
       Then("I am given the relevant risking information")
       assertThat(actual.riskScore).isEqualTo(100)
