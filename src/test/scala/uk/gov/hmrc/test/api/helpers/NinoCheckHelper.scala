@@ -35,9 +35,10 @@ class NinoCheckHelper {
     ninoInsightsCheckAPIDirectly.postInsightsCheckDirectly(ninoDetails)
 
   def callNinoCheckResponseFromAPI(
+    endpoint: String,
     ninoDetails: NinoInsightsRequest
   ): StandaloneWSRequest#Self#Response =
-    ninoInsightsCheckAPI.postInsightsCheck(ninoDetails)
+    ninoInsightsCheckAPI.postInsightsCheck(endpoint, ninoDetails)
 
   def callInvalidNinoCheckResponseFromAPI(
     ninoDetails: NinoInsightsRequest
@@ -53,10 +54,11 @@ class NinoCheckHelper {
   }
 
   def parseValidNinoCheckResponseFromAPI(
+    endpoint: String,
     ninoDetails: NinoInsightsRequest
   ): NinoInsightsResponse = {
     val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response =
-      callNinoCheckResponseFromAPI(ninoDetails)
+      callNinoCheckResponseFromAPI(endpoint, ninoDetails)
     Json.parse(ninoCheckRequestResponse.body).as[NinoInsightsResponse]
   }
 

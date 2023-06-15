@@ -29,12 +29,13 @@ import scala.concurrent.duration.DurationInt
 class NinoInsightsCheckService extends HttpClient {
   var ninoInsights: String             = TestConfiguration.url("nino-insights")
   def postInsightsCheck(
+    endpoint: String,
     ninoDetails: NinoInsightsRequest,
     host: String = ninoInsights
   ): StandaloneWSRequest#Self#Response =
     Await.result(
         post(
-          s"$host/${Endpoints.CHECK_INSIGHTS}",
+          s"$host/${endpoint}",
           ninoInsightsRequestWrites.writes(ninoDetails).toString(),
           ("Content-Type", "application/json"),
           ("User-Agent", "allowed-test-hmrc-service")
