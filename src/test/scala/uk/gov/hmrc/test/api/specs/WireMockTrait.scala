@@ -33,7 +33,7 @@ trait WireMockTrait extends BeforeAndAfterEach with BeforeAndAfterAll {
   private val wireMockServerPort   = wireMockServerConfig.getInt("mock.server.port")
   lazy val wireMockServer          = new WireMockServer(wireMockConfig().port(wireMockServerPort))
 
-  override def beforeAll: Unit = {
+  override def beforeAll(): Unit = {
     super.beforeAll()
     wireMockServer.start()
     WireMock.configureFor("127.0.0.1", wireMockServerPort)
@@ -61,7 +61,7 @@ trait WireMockTrait extends BeforeAndAfterEach with BeforeAndAfterAll {
   override def afterEach(): Unit =
     wireMockServer.resetAll()
 
-  override def afterAll: Unit = {
+  override def afterAll(): Unit = {
     wireMockServer.stop()
     super.afterAll()
   }
