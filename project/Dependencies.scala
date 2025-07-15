@@ -15,7 +15,7 @@ object Dependencies {
     "org.tpolecat"                 %% "doobie-core"              % "0.13.4" % Test,
     "org.tpolecat"                 %% "doobie-postgres"          % "0.13.4" % Test,
     "org.tpolecat"                 %% "doobie-scalatest"         % "0.13.4" % Test,
-    "uk.gov.hmrc.mongo"            %% "hmrc-mongo-test-play-29"  % "2.2.0"  % Test,
+    "uk.gov.hmrc.mongo"            %% "hmrc-mongo-test-play-30"  % "2.6.0"  % Test,
     "org.typelevel"                %% "cats-core"                % "2.3.1"  % Test,
     "com.fasterxml.jackson.module" %% "jackson-module-scala"     % "2.17.2" % Test,
     "io.swagger.parser.v3"          % "swagger-parser"           % "2.1.21" % Test,
