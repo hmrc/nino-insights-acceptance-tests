@@ -24,7 +24,7 @@ import uk.gov.hmrc.test.api.helpers.Endpoints
 
 class NinoInsightsProxySpec extends BaseSpec {
 
-  val endpoint: String = Endpoints.CHECK_INSIGHTS
+  val endpoint: String          = Endpoints.CHECK_INSIGHTS
   val endpointWithRoute: String = Endpoints.CHECK_INSIGHTS_WITH_ROUTE
 
   Feature("Check the NINO insights API") {
