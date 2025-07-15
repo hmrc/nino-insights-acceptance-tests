@@ -20,7 +20,7 @@ If you don't have postgres installed locally you can run it in docker using the 
 
 Run the following commands to start services locally:
 
-    sm --start NINO_INSIGHTS_PROXY NINO_INSIGHTS NINO_GATEWAY INTERNAL_AUTH --appendArgs '{
+    sm2 --start NINO_INSIGHTS_PROXY NINO_INSIGHTS NINO_GATEWAY INTERNAL_AUTH --appendArgs '{
         "NINO_INSIGHTS": [
             "-J-Dmicroservice.nino-insights.database.dbName=postgres",
             "-J-Dmicroservice.nino-insights.database.use-canned-data=true",
