@@ -34,12 +34,13 @@ class NinoInsightsCheckService extends HttpClient {
     host: String = ninoInsights
   ): StandaloneWSRequest#Self#Response =
     Await.result(
-        post(
-          s"$host/${endpoint}",
-          ninoInsightsRequestWrites.writes(ninoDetails).toString(),
-          ("Content-Type", "application/json"),
-          ("User-Agent", "allowed-test-hmrc-service")
-        ), 10.seconds
+      post(
+        s"$host/$endpoint",
+        ninoInsightsRequestWrites.writes(ninoDetails).toString(),
+        ("Content-Type", "application/json"),
+        ("User-Agent", "allowed-test-hmrc-service")
+      ),
+      10.seconds
     )
 
   def postInsightsInvalidCheck(
@@ -50,7 +51,8 @@ class NinoInsightsCheckService extends HttpClient {
       post(
         s"$host/${Endpoints.CHECK_INSIGHTS}",
         ninoInsightsRequestWrites.writes(ninoDetails).toString(),
-        ("Content-Type", "application/json"),
-      ), 10.seconds
+        ("Content-Type", "application/json")
+      ),
+      10.seconds
     )
 }

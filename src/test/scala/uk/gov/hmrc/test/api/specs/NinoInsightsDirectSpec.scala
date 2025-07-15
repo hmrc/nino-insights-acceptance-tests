@@ -69,7 +69,7 @@ class NinoInsightsDirectSpec extends BaseSpec with WireMockTrait {
       assertThat(actual.reason).isEqualTo(NINO_NOT_ON_WATCH_LIST)
 
       verify(
-        delayedFunction(1.seconds) (
+        delayedFunction(1.seconds)(
           postRequestedFor(urlEqualTo("/write/audit"))
             .withRequestBody(
               matchingJsonPath(

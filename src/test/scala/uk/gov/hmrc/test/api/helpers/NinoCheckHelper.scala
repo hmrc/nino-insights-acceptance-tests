@@ -25,8 +25,8 @@ import uk.gov.hmrc.test.api.models.BadRequest
 import uk.gov.hmrc.test.api.service.{NinoGatewayCheckService, NinoInsightsCheckDirectService, NinoInsightsCheckService}
 
 class NinoCheckHelper {
-  val ninoInsightsCheckAPI: NinoInsightsCheckService = new NinoInsightsCheckService
-  val ninoGatewayCheckAPI: NinoGatewayCheckService   = new NinoGatewayCheckService
+  val ninoInsightsCheckAPI: NinoInsightsCheckService               = new NinoInsightsCheckService
+  val ninoGatewayCheckAPI: NinoGatewayCheckService                 = new NinoGatewayCheckService
   val ninoInsightsCheckAPIDirectly: NinoInsightsCheckDirectService = new NinoInsightsCheckDirectService
 
   def callNinoCheckResponseFromAPIDirectly(
@@ -71,22 +71,26 @@ class NinoCheckHelper {
   }
 
   def parseValidNinoCheckResponseFromGatewayByUserAgent(ninoDetails: NinoInsightsRequest): NinoInsightsResponse = {
-    val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response = ninoGatewayCheckAPI.postGatewayCheckByUserAgentHeader(ninoDetails)
+    val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response =
+      ninoGatewayCheckAPI.postGatewayCheckByUserAgentHeader(ninoDetails)
     Json.parse(ninoCheckRequestResponse.body).as[NinoInsightsResponse]
   }
 
   def parseValidNinoCheckResponseFromGatewayByOriginatorId(ninoDetails: NinoInsightsRequest): NinoInsightsResponse = {
-    val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response = ninoGatewayCheckAPI.postGatewayCheckByOriginatorIdHeader(ninoDetails)
+    val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response =
+      ninoGatewayCheckAPI.postGatewayCheckByOriginatorIdHeader(ninoDetails)
     Json.parse(ninoCheckRequestResponse.body).as[NinoInsightsResponse]
   }
 
   def parseValidNinoCheckResponseFromGatewayByUserAgents(ninoDetails: NinoInsightsRequest): NinoInsightsResponse = {
-    val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response = ninoGatewayCheckAPI.postGatewayCheckByMultipleUserAgentHeaders(ninoDetails)
+    val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response =
+      ninoGatewayCheckAPI.postGatewayCheckByMultipleUserAgentHeaders(ninoDetails)
     Json.parse(ninoCheckRequestResponse.body).as[NinoInsightsResponse]
   }
 
   def postGatewayCheckByMultipleUserAgentValuesInOneHeader(ninoDetails: NinoInsightsRequest): NinoInsightsResponse = {
-    val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response = ninoGatewayCheckAPI.postGatewayCheckByMultipleUserAgentValuesInOneHeader(ninoDetails)
+    val ninoCheckRequestResponse: StandaloneWSRequest#Self#Response =
+      ninoGatewayCheckAPI.postGatewayCheckByMultipleUserAgentValuesInOneHeader(ninoDetails)
     Json.parse(ninoCheckRequestResponse.body).as[NinoInsightsResponse]
   }
 }
