@@ -30,8 +30,6 @@ import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.test.api.client.HttpClientHelper
 import uk.gov.hmrc.test.api.conf.TestConfiguration
 
-import scala.concurrent.Await
-import scala.concurrent.duration.DurationInt
 import scala.jdk.StreamConverters._
 
 class SwaggerSpecs extends AnyWordSpec with SwaggerSpec {
