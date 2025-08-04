@@ -17,8 +17,8 @@
 package uk.gov.hmrc.test.api.helpers
 
 object Endpoints {
-  val CHECK_INSIGHTS            = "check/insights"
-  val CHECK_INSIGHTS_WITH_ROUTE = "nino-insights/check/insights"
-  val INTERNAL_AUTH             = "test-only/token"
-  val DELETE_TOKEN              = "internal-auth/token/revoke"
+  val CHECK_INSIGHTS            = "/check/insights"
+  val CHECK_INSIGHTS_WITH_ROUTE = "/nino-insights/check/insights"
+  val INTERNAL_AUTH             = "/test-only/token"
+  val DELETE_TOKEN              = "/internal-auth/token/revoke"
 }

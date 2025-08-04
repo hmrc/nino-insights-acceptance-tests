@@ -22,6 +22,6 @@ case class NinoInsightsResponse(correlationId: String, riskScore: Int, reason: S
 object NinoInsightsResponse {
   implicit val format: Format[NinoInsightsResponse] = Json.format[NinoInsightsResponse]
 
-  val NINO_ON_WATCH_LIST: String = "NINO_ON_WATCH_LIST"
+  val NINO_ON_WATCH_LIST: String     = "NINO_ON_WATCH_LIST"
   val NINO_NOT_ON_WATCH_LIST: String = "NINO_NOT_ON_WATCH_LIST"
 }

@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.test.api.service
 
-import play.api.libs.json.Json
 import play.api.libs.ws.StandaloneWSRequest
 import uk.gov.hmrc.test.api.client.HttpClientHelper
 import uk.gov.hmrc.test.api.conf.TestConfiguration
@@ -24,17 +23,15 @@ import uk.gov.hmrc.test.api.helpers.Endpoints
 import uk.gov.hmrc.test.api.models.NinoInsightsRequest
 
 class NinoInsightsCheckDirectService extends HttpClientHelper {
-  var ninoInsights: String = TestConfiguration.url("nino-insights")
 
-  def postInsightsCheckDirectly(
-    ninoDetails: NinoInsightsRequest,
-    host: String = ninoInsights
-  ): StandaloneWSRequest#Self#Response =
-      post(
-        s"$host/${Endpoints.CHECK_INSIGHTS}",
-        ninoDetails,
-        "Content-Type" -> "application/json",
-        "User-Agent" -> "allowed-test-hmrc-service",
-        "Authorization" -> "Basic YmFuay1hY2NvdW50LWluc2lnaHRzLXByb3h5OmxvY2FsLXRlc3QtdG9rZW4="
-  )
+  val ninoInsights: String = TestConfiguration.url("nino-insights")
+
+  def postInsightsCheckDirectly(ninoDetails: NinoInsightsRequest): StandaloneWSRequest#Self#Response =
+    post(
+      ninoInsights + Endpoints.CHECK_INSIGHTS,
+      ninoDetails,
+      "Content-Type"  -> "application/json",
+      "User-Agent"    -> "allowed-test-hmrc-service",
+      "Authorization" -> "Basic YmFuay1hY2NvdW50LWluc2lnaHRzLXByb3h5OmxvY2FsLXRlc3QtdG9rZW4="
+    )
 }

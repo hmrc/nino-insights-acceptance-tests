@@ -23,22 +23,20 @@ import uk.gov.hmrc.test.api.helpers.Endpoints
 import uk.gov.hmrc.test.api.models.TestOnlyAddTokenRequest
 
 class InternalAuthService extends HttpClientHelper {
-  var internalAuth: String = TestConfiguration.url("internal-auth")
 
-  def postAuthRequest(
-                       tokenDetails: TestOnlyAddTokenRequest,
-                       host: String = internalAuth
-                     ): StandaloneWSRequest#Self#Response =
+  val internalAuth: String = TestConfiguration.url("internal-auth")
+
+  def postAuthRequest(tokenDetails: TestOnlyAddTokenRequest): StandaloneWSRequest#Self#Response =
     post(
-      s"$host/${Endpoints.INTERNAL_AUTH}",
+      internalAuth + Endpoints.INTERNAL_AUTH,
       tokenDetails,
-      "Content-Type" -> "application/json",
+      "Content-Type"  -> "application/json",
       "Authorization" -> "token"
     )(TestOnlyAddTokenRequest.format)
 
-  def deleteToken(token: String, host: String = internalAuth): StandaloneWSRequest#Self#Response =
+  def deleteToken(token: String): StandaloneWSRequest#Self#Response =
     post(
-      s"$host/${Endpoints.DELETE_TOKEN}",
+      internalAuth + Endpoints.DELETE_TOKEN,
       "",
       "Authorization" -> token
     )

@@ -26,19 +26,21 @@ trait HttpClientHelper extends HttpClient {
 
   def get(url: String, headers: (String, String)*): StandaloneWSRequest#Self#Response =
     mkRequest(url)
-      .withHttpHeaders(headers:_*)
+      .withHttpHeaders(headers: _*)
       .get()
       .futureValue
 
-  def post[T](url: String, body: T, headers: (String, String)*)(implicit writes: Writes[T]): StandaloneWSRequest#Self#Response =
+  def post[T](url: String, body: T, headers: (String, String)*)(implicit
+    writes: Writes[T]
+  ): StandaloneWSRequest#Self#Response =
     mkRequest(url)
-      .withHttpHeaders(headers:_*)
+      .withHttpHeaders(headers: _*)
       .post(Json.toJson(body))
       .futureValue
 
   def delete(url: String, headers: (String, String)*): StandaloneWSRequest#Self#Response =
     mkRequest(url)
-      .withHttpHeaders(headers:_*)
+      .withHttpHeaders(headers: _*)
       .delete()
       .futureValue
 }
