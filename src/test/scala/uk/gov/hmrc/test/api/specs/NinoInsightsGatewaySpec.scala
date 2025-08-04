@@ -16,8 +16,7 @@
 
 package uk.gov.hmrc.test.api.specs
 
-import org.assertj.core.api.Assertions.assertThat
-import uk.gov.hmrc.ninoinsights.model.response.response_codes.{NINO_NOT_ON_WATCH_LIST, NINO_ON_WATCH_LIST}
+import uk.gov.hmrc.test.api.models.NinoInsightsResponse.{NINO_NOT_ON_WATCH_LIST, NINO_ON_WATCH_LIST}
 import uk.gov.hmrc.test.api.testdata.ApiErrors.NOT_AUTHORISED
 import uk.gov.hmrc.test.api.testdata.NationalInsuranceNumbers.{NO_RISK_NINO, RISKY_NINO, RISKY_NINO_LOWER_CASE}
 
@@ -35,8 +34,8 @@ class NinoInsightsGatewaySpec extends BaseSpec with WireMockTrait with InternalA
       val actual = ninoCheckHelper.parseValidNinoCheckResponseFromGatewayByUserAgent(NO_RISK_NINO)
 
       Then("I am given the relevant risking information")
-      assertThat(actual.riskScore).isEqualTo(0)
-      assertThat(actual.reason).isEqualTo(NINO_NOT_ON_WATCH_LIST)
+      assert(actual.riskScore == 0)
+      assert(actual.reason == NINO_NOT_ON_WATCH_LIST)
     }
 
     Scenario("Get risking information for a NINO on the risk list using a single User-Agent header") {
@@ -47,8 +46,8 @@ class NinoInsightsGatewaySpec extends BaseSpec with WireMockTrait with InternalA
       val actual = ninoCheckHelper.parseValidNinoCheckResponseFromGatewayByUserAgent(RISKY_NINO)
 
       Then("I am given the relevant risking information")
-      assertThat(actual.riskScore).isEqualTo(100)
-      assertThat(actual.reason).isEqualTo(NINO_ON_WATCH_LIST)
+      assert(actual.riskScore == 100)
+      assert(actual.reason == NINO_ON_WATCH_LIST)
     }
 
     Scenario("Get risking information for a NINO on the risk list using multiple User-Agent headers") {
@@ -59,8 +58,8 @@ class NinoInsightsGatewaySpec extends BaseSpec with WireMockTrait with InternalA
       val actual = ninoCheckHelper.parseValidNinoCheckResponseFromGatewayByUserAgents(RISKY_NINO)
 
       Then("I am given the relevant risking information")
-      assertThat(actual.riskScore).isEqualTo(100)
-      assertThat(actual.reason).isEqualTo(NINO_ON_WATCH_LIST)
+      assert(actual.riskScore == 100)
+      assert(actual.reason == NINO_ON_WATCH_LIST)
     }
 
     Scenario("Get risking information for a NINO on the risk list using multiple User-Agent values in one header") {
@@ -71,8 +70,8 @@ class NinoInsightsGatewaySpec extends BaseSpec with WireMockTrait with InternalA
       val actual = ninoCheckHelper.postGatewayCheckByMultipleUserAgentValuesInOneHeader(RISKY_NINO)
 
       Then("I am given the relevant risking information")
-      assertThat(actual.riskScore).isEqualTo(100)
-      assertThat(actual.reason).isEqualTo(NINO_ON_WATCH_LIST)
+      assert(actual.riskScore == 100)
+      assert(actual.reason == NINO_ON_WATCH_LIST)
     }
 
     Scenario("Get risking information for a NINO on the risk list using a single OriginatorId header") {
@@ -83,8 +82,8 @@ class NinoInsightsGatewaySpec extends BaseSpec with WireMockTrait with InternalA
       val actual = ninoCheckHelper.parseValidNinoCheckResponseFromGatewayByOriginatorId(RISKY_NINO)
 
       Then("I am given the relevant risking information")
-      assertThat(actual.riskScore).isEqualTo(100)
-      assertThat(actual.reason).isEqualTo(NINO_ON_WATCH_LIST)
+      assert(actual.riskScore == 100)
+      assert(actual.reason == NINO_ON_WATCH_LIST)
     }
 
     Scenario("Get risking information for a NINO on the risk list using lower case") {
@@ -95,8 +94,8 @@ class NinoInsightsGatewaySpec extends BaseSpec with WireMockTrait with InternalA
       val actual = ninoCheckHelper.parseValidNinoCheckResponseFromGatewayByUserAgent(RISKY_NINO_LOWER_CASE)
 
       Then("I am given the relevant risking information")
-      assertThat(actual.riskScore).isEqualTo(100)
-      assertThat(actual.reason).isEqualTo(NINO_ON_WATCH_LIST)
+      assert(actual.riskScore == 100)
+      assert(actual.reason == NINO_ON_WATCH_LIST)
     }
 
     Scenario("Try to get risking information for a NINO on the risk list without using a user agent") {
@@ -106,8 +105,8 @@ class NinoInsightsGatewaySpec extends BaseSpec with WireMockTrait with InternalA
       val actual = ninoCheckHelper.parseInvalidNinoCheckResponseFromAPI(RISKY_NINO)
 
       Then("My query is rejected")
-      assertThat(actual.code).isEqualTo(403)
-      assertThat(actual.description).contains(NOT_AUTHORISED)
+      assert(actual.code == 403)
+      assert(actual.description contains NOT_AUTHORISED)
     }
   }
 }

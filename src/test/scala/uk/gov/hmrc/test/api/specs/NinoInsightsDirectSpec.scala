@@ -17,8 +17,7 @@
 package uk.gov.hmrc.test.api.specs
 
 import com.github.tomakehurst.wiremock.client.WireMock.{matchingJsonPath, postRequestedFor, urlEqualTo, verify}
-import org.assertj.core.api.Assertions.assertThat
-import uk.gov.hmrc.ninoinsights.model.response.response_codes.{NINO_NOT_ON_WATCH_LIST, NINO_ON_WATCH_LIST}
+import uk.gov.hmrc.test.api.models.NinoInsightsResponse.{NINO_NOT_ON_WATCH_LIST, NINO_ON_WATCH_LIST}
 import uk.gov.hmrc.test.api.conf.TestConfiguration
 import uk.gov.hmrc.test.api.testdata.NationalInsuranceNumbers.{NO_RISK_NINO, RISKY_NINO}
 
@@ -35,8 +34,8 @@ class NinoInsightsDirectSpec extends BaseSpec with WireMockTrait {
       val actual = ninoCheckHelper.parseValidNinoCheckResponseFromAPIDirectly(RISKY_NINO)
 
       Then("I am given the relevant risk information")
-      assertThat(actual.riskScore).isEqualTo(100)
-      assertThat(actual.reason).isEqualTo(NINO_ON_WATCH_LIST)
+      assert(actual.riskScore == 100)
+      assert(actual.reason == NINO_ON_WATCH_LIST)
 
       verify(
         delayedFunction(1.seconds)(
@@ -65,8 +64,8 @@ class NinoInsightsDirectSpec extends BaseSpec with WireMockTrait {
       val actual = ninoCheckHelper.parseValidNinoCheckResponseFromAPIDirectly(NO_RISK_NINO)
 
       Then("I am given the relevant risk information")
-      assertThat(actual.riskScore).isEqualTo(0)
-      assertThat(actual.reason).isEqualTo(NINO_NOT_ON_WATCH_LIST)
+      assert(actual.riskScore == 0)
+      assert(actual.reason == NINO_NOT_ON_WATCH_LIST)
 
       verify(
         delayedFunction(1.seconds)(

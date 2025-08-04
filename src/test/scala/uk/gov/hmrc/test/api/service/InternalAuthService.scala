@@ -16,40 +16,30 @@
 
 package uk.gov.hmrc.test.api.service
 
-import play.api.libs.json.Json
 import play.api.libs.ws.StandaloneWSRequest
-import uk.gov.hmrc.test.api.client.HttpClient
+import uk.gov.hmrc.test.api.client.HttpClientHelper
 import uk.gov.hmrc.test.api.conf.TestConfiguration
 import uk.gov.hmrc.test.api.helpers.Endpoints
 import uk.gov.hmrc.test.api.models.TestOnlyAddTokenRequest
 
-import scala.concurrent.Await
-import scala.concurrent.duration.DurationInt
-
-class InternalAuthService extends HttpClient {
+class InternalAuthService extends HttpClientHelper {
   var internalAuth: String = TestConfiguration.url("internal-auth")
 
   def postAuthRequest(
-    tokenDetails: TestOnlyAddTokenRequest,
-    host: String = internalAuth
-  ): StandaloneWSRequest#Self#Response =
-    Await.result(
-      post(
-        s"$host/${Endpoints.INTERNAL_AUTH}",
-        Json.toJson(tokenDetails)(TestOnlyAddTokenRequest.format).toString(),
-        ("Content-Type", "application/json"),
-        ("Authorization", "token")
-      ),
-      10.seconds
-    )
+                       tokenDetails: TestOnlyAddTokenRequest,
+                       host: String = internalAuth
+                     ): StandaloneWSRequest#Self#Response =
+    post(
+      s"$host/${Endpoints.INTERNAL_AUTH}",
+      tokenDetails,
+      "Content-Type" -> "application/json",
+      "Authorization" -> "token"
+    )(TestOnlyAddTokenRequest.format)
 
   def deleteToken(token: String, host: String = internalAuth): StandaloneWSRequest#Self#Response =
-    Await.result(
-      post(
-        s"$host/${Endpoints.DELETE_TOKEN}",
-        "",
-        ("Authorization", token)
-      ),
-      10.seconds
+    post(
+      s"$host/${Endpoints.DELETE_TOKEN}",
+      "",
+      "Authorization" -> token
     )
 }

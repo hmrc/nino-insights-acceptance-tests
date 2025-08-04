@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.test.api.testdata
+package uk.gov.hmrc.test.api.models
 
-import uk.gov.hmrc.test.api.models.NinoInsightsRequest
+import play.api.libs.json.{Format, Json}
 
-object NationalInsuranceNumbers {
-  val NO_RISK_NINO: NinoInsightsRequest          = NinoInsightsRequest("AB123456A")
-  val RISKY_NINO: NinoInsightsRequest            = NinoInsightsRequest("TP519322D")
-  val RISKY_NINO_LOWER_CASE: NinoInsightsRequest = NinoInsightsRequest("tp519322d")
+case class NinoInsightsResponse(correlationId: String, riskScore: Int, reason: String)
+object NinoInsightsResponse {
+  implicit val format: Format[NinoInsightsResponse] = Json.format[NinoInsightsResponse]
+
+  val NINO_ON_WATCH_LIST: String = "NINO_ON_WATCH_LIST"
+  val NINO_NOT_ON_WATCH_LIST: String = "NINO_NOT_ON_WATCH_LIST"
 }

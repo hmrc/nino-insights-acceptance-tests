@@ -16,43 +16,34 @@
 
 package uk.gov.hmrc.test.api.service
 
+import play.api.libs.json.Json
 import play.api.libs.ws.StandaloneWSRequest
-import uk.gov.hmrc.ninoinsights.model.request.NinoInsightsRequest
-import uk.gov.hmrc.ninoinsights.model.request.NinoInsightsRequest.implicits.ninoInsightsRequestWrites
-import uk.gov.hmrc.test.api.client.HttpClient
+import uk.gov.hmrc.test.api.client.HttpClientHelper
 import uk.gov.hmrc.test.api.conf.TestConfiguration
 import uk.gov.hmrc.test.api.helpers.Endpoints
+import uk.gov.hmrc.test.api.models.NinoInsightsRequest
 
-import scala.concurrent.Await
-import scala.concurrent.duration.DurationInt
-
-class NinoInsightsCheckService extends HttpClient {
+class NinoInsightsCheckService extends HttpClientHelper {
   var ninoInsights: String             = TestConfiguration.url("nino-insights")
   def postInsightsCheck(
-    endpoint: String,
-    ninoDetails: NinoInsightsRequest,
-    host: String = ninoInsights
-  ): StandaloneWSRequest#Self#Response =
-    Await.result(
-      post(
-        s"$host/$endpoint",
-        ninoInsightsRequestWrites.writes(ninoDetails).toString(),
-        ("Content-Type", "application/json"),
-        ("User-Agent", "allowed-test-hmrc-service")
-      ),
-      10.seconds
+                         endpoint: String,
+                         ninoDetails: NinoInsightsRequest,
+                         host: String = ninoInsights
+                       ): StandaloneWSRequest#Self#Response =
+    post(
+      s"$host/$endpoint",
+      ninoDetails,
+      "Content-Type" -> "application/json",
+      "User-Agent" -> "allowed-test-hmrc-service"
     )
 
   def postInsightsInvalidCheck(
-    ninoDetails: NinoInsightsRequest,
-    host: String = ninoInsights
-  ): StandaloneWSRequest#Self#Response =
-    Await.result(
-      post(
-        s"$host/${Endpoints.CHECK_INSIGHTS}",
-        ninoInsightsRequestWrites.writes(ninoDetails).toString(),
-        ("Content-Type", "application/json")
-      ),
-      10.seconds
+                                ninoDetails: NinoInsightsRequest,
+                                host: String = ninoInsights
+                              ): StandaloneWSRequest#Self#Response =
+    post(
+      s"$host/${Endpoints.CHECK_INSIGHTS}",
+      ninoDetails,
+      "Content-Type" -> "application/json"
     )
 }
