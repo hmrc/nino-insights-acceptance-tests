@@ -22,25 +22,33 @@ import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 import play.api.libs.ws.StandaloneWSRequest
 import uk.gov.hmrc.apitestrunner.http.HttpClient
 
+import scala.concurrent.{Await, Future}
+import scala.concurrent.duration.DurationInt
+
 trait HttpClientHelper extends HttpClient {
 
+  private def await[T](f: => Future[T]): T = Await.result(f, 10.seconds)
+
   def get(url: String, headers: (String, String)*): StandaloneWSRequest#Self#Response =
-    mkRequest(url)
-      .withHttpHeaders(headers: _*)
-      .get()
-      .futureValue
+    await(
+      mkRequest(url)
+        .withHttpHeaders(headers: _*)
+        .get()
+    )
 
   def post[T](url: String, body: T, headers: (String, String)*)(implicit
     writes: Writes[T]
   ): StandaloneWSRequest#Self#Response =
-    mkRequest(url)
-      .withHttpHeaders(headers: _*)
-      .post(Json.toJson(body))
-      .futureValue
+    await(
+      mkRequest(url)
+        .withHttpHeaders(headers: _*)
+        .post(Json.toJson(body))
+    )
 
   def delete(url: String, headers: (String, String)*): StandaloneWSRequest#Self#Response =
-    mkRequest(url)
-      .withHttpHeaders(headers: _*)
-      .delete()
-      .futureValue
+    await(
+      mkRequest(url)
+        .withHttpHeaders(headers: _*)
+        .delete()
+    )
 }
