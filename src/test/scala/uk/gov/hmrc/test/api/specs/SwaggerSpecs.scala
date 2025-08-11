@@ -27,11 +27,9 @@ import org.openapi4j.schema.validator.v3.SchemaValidator
 import org.scalatest.AppendedClues.convertToClueful
 import org.scalatest.matchers.should.Matchers._
 import org.scalatest.wordspec.AnyWordSpec
-import uk.gov.hmrc.test.api.client.HttpClient
+import uk.gov.hmrc.test.api.client.HttpClientHelper
 import uk.gov.hmrc.test.api.conf.TestConfiguration
 
-import scala.concurrent.Await
-import scala.concurrent.duration.DurationInt
 import scala.jdk.StreamConverters._
 
 class SwaggerSpecs extends AnyWordSpec with SwaggerSpec {
@@ -42,7 +40,7 @@ class SwaggerSpecs extends AnyWordSpec with SwaggerSpec {
   )
 }
 
-trait SwaggerSpec {
+trait SwaggerSpec extends HttpClientHelper {
   this: AnyWordSpec =>
 
   val parseOptions = new ParseOptions()
@@ -53,7 +51,6 @@ trait SwaggerSpec {
   mapper.setSerializationInclusion(Include.NON_NULL);
 
   val applicationJson = "application/json"
-  val client          = new HttpClient() {}
 
   def validOpenApiSpecAt(host: String, openApiUrl: String, userAgent: String = "allowed-test-hmrc-service"): Unit = {
 
@@ -127,14 +124,13 @@ trait SwaggerSpec {
           }
 
           examples.foreach { e =>
-            val headers = Seq("Content-Type" -> applicationJson, "User-Agent" -> userAgent)
-            val req     = verb match {
-              case "GET"  => client.get(s"$host$path", headers: _*)
+            val headers  = Seq("Content-Type" -> applicationJson, "User-Agent" -> userAgent)
+            val response = verb match {
+              case "GET"  => get(s"$host$path", headers: _*)
               case "POST" =>
-                client.post(s"$host$path", mapper.writeValueAsString(e.asInstanceOf[JsonNode]), headers: _*)
+                post(s"$host$path", mapper.writeValueAsString(e.asInstanceOf[JsonNode]), headers: _*)
             }
 
-            val response = Await.result(req, 10.seconds)
             responses.get(response.status.toString).collect { case Some(r) =>
               s"$verb $path - ${response.status}" in {
                 val json      = mapper.writeValueAsString(r.getSchema)

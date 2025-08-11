@@ -2,23 +2,18 @@ import sbt._
 
 object Dependencies {
 
+  val doobieVersion = "0.13.4"
+
   val test: Seq[ModuleID] = Seq(
-    "org.scalatest"                %% "scalatest"                % "3.2.19" % Test,
-    "com.vladsch.flexmark"          % "flexmark-all"             % "0.62.2" % Test,
-    "com.typesafe"                  % "config"                   % "1.4.3"  % Test,
-    "com.typesafe.play"            %% "play-ahc-ws-standalone"   % "2.2.9"  % Test,
-    "org.slf4j"                     % "slf4j-simple"             % "2.0.13" % Test,
-    "com.typesafe.play"            %% "play-ws-standalone-json"  % "2.2.9"  % Test,
-    "com.github.tomakehurst"        % "wiremock"                 % "2.27.2" % Test,
-    "org.assertj"                   % "assertj-core"             % "3.26.3" % Test,
-    "uk.gov.hmrc"                  %% "nino-insights"            % "0.+"    % Test,
-    "org.tpolecat"                 %% "doobie-core"              % "0.13.4" % Test,
-    "org.tpolecat"                 %% "doobie-postgres"          % "0.13.4" % Test,
-    "org.tpolecat"                 %% "doobie-scalatest"         % "0.13.4" % Test,
-    "uk.gov.hmrc.mongo"            %% "hmrc-mongo-test-play-30"  % "2.6.0"  % Test,
-    "org.typelevel"                %% "cats-core"                % "2.3.1"  % Test,
-    "com.fasterxml.jackson.module" %% "jackson-module-scala"     % "2.17.2" % Test,
-    "io.swagger.parser.v3"          % "swagger-parser"           % "2.1.21" % Test,
-    "org.openapi4j"                 % "openapi-schema-validator" % "1.0.7"  % Test
-  )
+    "uk.gov.hmrc"                  %% "api-test-runner"          % "0.10.0",
+    "org.wiremock"                  % "wiremock"                 % "3.13.1",
+    "com.fasterxml.jackson.module" %% "jackson-module-scala"     % "2.19.2",
+    "org.tpolecat"                 %% "doobie-core"              % doobieVersion,
+    "org.tpolecat"                 %% "doobie-postgres"          % doobieVersion,
+    "org.tpolecat"                 %% "doobie-scalatest"         % doobieVersion,
+    "uk.gov.hmrc.mongo"            %% "hmrc-mongo-test-play-30"  % "2.7.0",
+    "org.typelevel"                %% "cats-core"                % "2.13.0",
+    "io.swagger.parser.v3"          % "swagger-parser"           % "2.1.31",
+    "org.openapi4j"                 % "openapi-schema-validator" % "1.0.7"
+  ).map(_ % Test)
 }

@@ -17,72 +17,56 @@
 package uk.gov.hmrc.test.api.service
 
 import play.api.libs.ws.StandaloneWSRequest
-import uk.gov.hmrc.ninoinsights.model.request.NinoInsightsRequest
-import uk.gov.hmrc.ninoinsights.model.request.NinoInsightsRequest.implicits.ninoInsightsRequestWrites
-import uk.gov.hmrc.test.api.client.HttpClient
+import uk.gov.hmrc.test.api.client.HttpClientHelper
 import uk.gov.hmrc.test.api.conf.TestConfiguration
 import uk.gov.hmrc.test.api.helpers.Endpoints
+import uk.gov.hmrc.test.api.models.NinoInsightsRequest
 
-import scala.concurrent.Await
-import scala.concurrent.duration.DurationInt
+class NinoGatewayCheckService extends HttpClientHelper {
 
-class NinoGatewayCheckService extends HttpClient {
-
-  var host: String            = TestConfiguration.url("nino-gateway")
-  val checkAccountURL: String = s"$host/${Endpoints.CHECK_INSIGHTS}"
+  val host: String            = TestConfiguration.url("nino-gateway")
+  val checkAccountURL: String = host + Endpoints.CHECK_INSIGHTS
   val userAgentOne            = "nino-gateway"
   val userAgentTwo            = "allowed-test-hmrc-service"
 
   def postGatewayCheckByUserAgentHeader(
     ninoDetails: NinoInsightsRequest
   ): StandaloneWSRequest#Self#Response =
-    Await.result(
-      post(
-        checkAccountURL,
-        ninoInsightsRequestWrites.writes(ninoDetails).toString(),
-        ("Content-Type", "application/json"),
-        ("User-Agent", s"$userAgentOne")
-      ),
-      10.seconds
+    post(
+      checkAccountURL,
+      ninoDetails,
+      "Content-Type" -> "application/json",
+      "User-Agent"   -> s"$userAgentOne"
     )
 
   def postGatewayCheckByMultipleUserAgentHeaders(
     ninoDetails: NinoInsightsRequest
   ): StandaloneWSRequest#Self#Response =
-    Await.result(
-      post(
-        checkAccountURL,
-        ninoInsightsRequestWrites.writes(ninoDetails).toString(),
-        ("Content-Type", "application/json"),
-        ("User-Agent", s"$userAgentOne"),
-        ("User-Agent", s"$userAgentTwo")
-      ),
-      10.seconds
+    post(
+      checkAccountURL,
+      ninoDetails,
+      "Content-Type" -> "application/json",
+      "User-Agent"   -> s"$userAgentOne",
+      "User-Agent"   -> s"$userAgentTwo"
     )
 
   def postGatewayCheckByOriginatorIdHeader(
     ninoDetails: NinoInsightsRequest
   ): StandaloneWSRequest#Self#Response =
-    Await.result(
-      post(
-        checkAccountURL,
-        ninoInsightsRequestWrites.writes(ninoDetails).toString(),
-        ("Content-Type", "application/json"),
-        ("OriginatorId", s"$userAgentOne")
-      ),
-      10.seconds
+    post(
+      checkAccountURL,
+      ninoDetails,
+      "Content-Type" -> "application/json",
+      "OriginatorId" -> s"$userAgentOne"
     )
 
   def postGatewayCheckByMultipleUserAgentValuesInOneHeader(
     ninoDetails: NinoInsightsRequest
   ): StandaloneWSRequest#Self#Response =
-    Await.result(
-      post(
-        checkAccountURL,
-        ninoInsightsRequestWrites.writes(ninoDetails).toString(),
-        ("Content-Type", "application/json"),
-        ("User-Agent", s"$userAgentOne,$userAgentTwo")
-      ),
-      10.seconds
+    post(
+      checkAccountURL,
+      ninoDetails,
+      "Content-Type" -> "application/json",
+      "User-Agent"   -> s"$userAgentOne,$userAgentTwo"
     )
 }

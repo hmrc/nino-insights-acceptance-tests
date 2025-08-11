@@ -18,9 +18,8 @@ package uk.gov.hmrc.test.api.helpers
 
 import play.api.libs.json.Json
 import play.api.libs.ws.StandaloneWSRequest
-import uk.gov.hmrc.ninoinsights.model.request.NinoInsightsRequest
-import uk.gov.hmrc.ninoinsights.model.response.NinoInsightsResponse
-import uk.gov.hmrc.ninoinsights.model.response.NinoInsightsResponse.implicits.ninoInsightsResponseFormat
+import uk.gov.hmrc.test.api.models.NinoInsightsRequest
+import uk.gov.hmrc.test.api.models.NinoInsightsResponse
 import uk.gov.hmrc.test.api.models.BadRequest
 import uk.gov.hmrc.test.api.service.{NinoGatewayCheckService, NinoInsightsCheckDirectService, NinoInsightsCheckService}
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.test.api.helpers
+package uk.gov.hmrc.test.api.models
 
-object Endpoints {
-  val CHECK_INSIGHTS            = "/check/insights"
-  val CHECK_INSIGHTS_WITH_ROUTE = "/nino-insights/check/insights"
-  val INTERNAL_AUTH             = "/test-only/token"
-  val DELETE_TOKEN              = "/internal-auth/token/revoke"
+import play.api.libs.json.{Format, Json}
+
+case class NinoInsightsResponse(correlationId: String, riskScore: Int, reason: String)
+object NinoInsightsResponse {
+  implicit val format: Format[NinoInsightsResponse] = Json.format[NinoInsightsResponse]
+
+  val NINO_ON_WATCH_LIST: String     = "NINO_ON_WATCH_LIST"
+  val NINO_NOT_ON_WATCH_LIST: String = "NINO_NOT_ON_WATCH_LIST"
 }

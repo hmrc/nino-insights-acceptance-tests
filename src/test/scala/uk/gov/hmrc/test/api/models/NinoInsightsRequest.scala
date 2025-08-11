@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.test.api.utils
+package uk.gov.hmrc.test.api.models
 
-import org.slf4j.{Logger, LoggerFactory}
+import play.api.libs.json.{Format, Json}
 
-object ApiLogger {
-
-  val log: Logger = LoggerFactory.getLogger("[API Logger]")
-
+case class NinoInsightsRequest(nino: String)
+object NinoInsightsRequest {
+  implicit val format: Format[NinoInsightsRequest] = Json.format[NinoInsightsRequest]
 }

@@ -17,42 +17,27 @@
 package uk.gov.hmrc.test.api.service
 
 import play.api.libs.ws.StandaloneWSRequest
-import uk.gov.hmrc.ninoinsights.model.request.NinoInsightsRequest
-import uk.gov.hmrc.ninoinsights.model.request.NinoInsightsRequest.implicits.ninoInsightsRequestWrites
-import uk.gov.hmrc.test.api.client.HttpClient
+import uk.gov.hmrc.test.api.client.HttpClientHelper
 import uk.gov.hmrc.test.api.conf.TestConfiguration
 import uk.gov.hmrc.test.api.helpers.Endpoints
+import uk.gov.hmrc.test.api.models.NinoInsightsRequest
 
-import scala.concurrent.Await
-import scala.concurrent.duration.DurationInt
+class NinoInsightsCheckService extends HttpClientHelper {
 
-class NinoInsightsCheckService extends HttpClient {
-  var ninoInsights: String             = TestConfiguration.url("nino-insights")
-  def postInsightsCheck(
-    endpoint: String,
-    ninoDetails: NinoInsightsRequest,
-    host: String = ninoInsights
-  ): StandaloneWSRequest#Self#Response =
-    Await.result(
-      post(
-        s"$host/$endpoint",
-        ninoInsightsRequestWrites.writes(ninoDetails).toString(),
-        ("Content-Type", "application/json"),
-        ("User-Agent", "allowed-test-hmrc-service")
-      ),
-      10.seconds
+  val ninoInsights: String = TestConfiguration.url("nino-insights")
+
+  def postInsightsCheck(endpoint: String, ninoDetails: NinoInsightsRequest): StandaloneWSRequest#Self#Response =
+    post(
+      ninoInsights + endpoint,
+      ninoDetails,
+      "Content-Type" -> "application/json",
+      "User-Agent"   -> "allowed-test-hmrc-service"
     )
 
-  def postInsightsInvalidCheck(
-    ninoDetails: NinoInsightsRequest,
-    host: String = ninoInsights
-  ): StandaloneWSRequest#Self#Response =
-    Await.result(
-      post(
-        s"$host/${Endpoints.CHECK_INSIGHTS}",
-        ninoInsightsRequestWrites.writes(ninoDetails).toString(),
-        ("Content-Type", "application/json")
-      ),
-      10.seconds
+  def postInsightsInvalidCheck(ninoDetails: NinoInsightsRequest): StandaloneWSRequest#Self#Response =
+    post(
+      ninoInsights + Endpoints.CHECK_INSIGHTS,
+      ninoDetails,
+      "Content-Type" -> "application/json"
     )
 }

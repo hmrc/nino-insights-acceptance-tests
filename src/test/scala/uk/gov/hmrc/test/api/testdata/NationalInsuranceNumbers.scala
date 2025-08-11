@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.test.api.testdata
 
-import uk.gov.hmrc.ninoinsights.model.request.NinoInsightsRequest
+import uk.gov.hmrc.test.api.models.NinoInsightsRequest
 
 object NationalInsuranceNumbers {
   val NO_RISK_NINO: NinoInsightsRequest          = NinoInsightsRequest("AB123456A")
