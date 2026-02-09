@@ -18,25 +18,11 @@ If you don't have postgres installed locally you can run it in docker using the 
 
     docker run -d --rm --name postgresql -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 postgres:10.14
 
-Run the following commands to start services locally:
+Run the following script to start services locally:
 
-    sm2 --start NINO_INSIGHTS_PROXY NINO_INSIGHTS NINO_GATEWAY INTERNAL_AUTH --appendArgs '{
-        "NINO_INSIGHTS": [
-            "-J-Dmicroservice.nino-insights.database.dbName=postgres",
-            "-J-Dmicroservice.nino-insights.database.use-canned-data=true",
-            "-J-Dauditing.consumer.baseUri.port=6001",
-            "-J-Dauditing.consumer.baseUri.host=localhost",
-            "-J-Dauditing.enabled=true"
-        ],
-        "NINO_INSIGHTS_PROXY": [
-            "-J-Dauditing.consumer.baseUri.port=6001",
-            "-J-Dauditing.consumer.baseUri.host=localhost",
-            "-J-Dauditing.enabled=false",
-            "-J-Dmicroservice.services.access-control.enabled=true",
-            "-J-Dmicroservice.services.access-control.allow-list.0=nino-gateway",
-            "-J-Dmicroservice.services.access-control.allow-list.1=allowed-test-hmrc-service"
-        ]
-    }'
+```bash
+  ./start-services.sh
+```
 
 ## Running specs
 
